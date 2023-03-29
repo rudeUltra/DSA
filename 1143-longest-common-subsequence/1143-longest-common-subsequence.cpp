@@ -10,12 +10,25 @@ public:
         if(s[i]==t[j]){
             return dp[i][j]=1+f(i-1,j-1,s,t,dp);
         }
-        return dp[i][j]=max(f(i,j-1,s,t,dp),f(i-1,j,s,t,dp));
+        return dp[i][j]=max(f(i,j-1,s,t,dp),f(i-1,j,s,t,dp)); //recursion
     }
     int longestCommonSubsequence(string text1, string text2) {
         int n=text1.size();
         int m=text2.size();
-        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
-        return f(n-1,m-1,text1,text2,dp);
+        vector<vector<int>>dp(n+1,vector<int>(m+1,0));
+        
+        for(int i=1;i<=n;++i){
+            for(int j=1;j<=m;++j){
+                if(text1[i-1]==text2[j-1]){
+                    dp[i][j]=dp[i-1][j-1]+1;
+                }
+                else{
+                    dp[i][j]=max(dp[i-1][j],dp[i][j-1]); //try all possibilities
+                }
+            }
+        }
+        
+        return dp[n][m];
+        
     }
 };
