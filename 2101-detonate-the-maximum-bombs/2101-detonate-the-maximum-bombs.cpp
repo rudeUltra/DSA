@@ -33,7 +33,7 @@ int maximumDetonation(vector<vector<int>>& bomb) {
         {
             long long r =dis(bomb[i][0],bomb[i][1],bomb[j][0],bomb[j][1]);
             if(r<= pow(bomb[i][2],2)) adj[i].push_back(j);
-            if(r<= pow(bomb[j][2],2)) adj[j].push_back(i);
+            if(r<= pow(bomb[j][2],2)) adj[j].push_back(i); //to the power to because not using sqrt
         }
     
     int ans=INT_MIN;
