@@ -1,5 +1,9 @@
 class Solution {
 public:
+    
+    
+    
+    
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         sort(candidates.begin(),candidates.end()); //sort hmm important
         vector<vector<int>> ans;
@@ -12,10 +16,15 @@ public:
             ans.push_back(current);
             return;
         }
-        for(int i=idx;i<candidates.size() && target>=candidates[i];++i){
+        
+        for(int i=idx;i<candidates.size() ;++i){
+            if(candidates[i]<=target){
             current.push_back(candidates[i]);
             backtrack(ans,current,candidates,target-candidates[i],i);
             current.pop_back();
+            }
         }
     }
+    
+    
 };
