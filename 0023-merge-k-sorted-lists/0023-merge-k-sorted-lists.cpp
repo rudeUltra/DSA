@@ -11,42 +11,43 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
+        //siuuu
+        //priority_queue with linked list less go
         
-        if(lists.empty()) return nullptr;
-        
-        priority_queue<pair<int,ListNode*>> pq; //by default heap is sorted by first element value 
         int n=lists.size();
+        priority_queue<pair<int,ListNode*>,vector<pair<int,ListNode*>>,greater<pair<int,ListNode*>>>pq;
         
-        for(int i=0;i<n;i++)
-        {
-            while(lists[i]!=nullptr)
-            {
-                pq.push({-lists[i]->val,lists[i]});
-                lists[i]=lists[i]->next;
+        for(int i=0;i<n;++i){
+            ListNode*temp;
+            temp=lists[i];
+            
+            while(temp){
+                pq.push({temp->val,temp});
+                temp=temp->next;
             }
         }
         
+        //all linked lists are in the pq 
+        ListNode* ptr=NULL;
+        ListNode*head=NULL;
         
-        ListNode* head=nullptr;
-        ListNode* k=nullptr;
-        
-        if(pq.empty()) return head;
-        
+        if(pq.size()==0){
+            return NULL;
+        }
+        ptr=pq.top().second; //we have to assign first siu
         head=pq.top().second;
-        k=pq.top().second;
         pq.pop();
         
-     
-        while(!pq.empty())
-        {
-            k->next=pq.top().second;
-            k=pq.top().second;
+        while(!pq.empty()){
+            auto it=pq.top();
+            ptr->next=it.second;
             pq.pop();
-            
+            ptr=ptr->next;
         }
-        k->next=NULL;
+        ptr->next=NULL; //to finish the list
         
-        return head==NULL?nullptr:head;
+        return head;
+        
         
     }
 };
