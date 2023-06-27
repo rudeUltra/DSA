@@ -2,7 +2,7 @@ class Solution {
 public:
     int f(int index,vector<int>&coins,int target,vector<vector<int>>&dp){
         if(target==0){
-            return 1;
+            return 1; //no zero so phew bc
         }
         if(index==0){
            return (target%coins[index]==0);
