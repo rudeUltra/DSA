@@ -1,49 +1,49 @@
 class Solution {
 public:
-    string k;
-    string k1;
-    int getans(int i,int j,vector<vector<int>>&dp)
-    {
-      
-        if(i<0 && j<0)
-        {
+    
+    bool f(int i,int j,string &s,string &p,vector<vector<int>>&dp){
+        if(i<0 && j<0){
+            //siuuu 
             return 1;
         }
-        if(i>=0 && j<0)
-        {
-            // int flag=1;
-            while(i>=0)
-            {
-                if(k[i]!='*')
-                {
+        if(i<0 && j>=0){
+            while(j>=0){
+                if(p[j]!='*'){
                     return 0;
                 }
-                i--;
+                j--;
             }
             return 1;
         }
-        if(i<0 && j>=0)
-            return false;
-          if(dp[i][j]!=-1)
+        
+        if(j<0){
+            return 0; //no chance of matching sed
+        }
+        
+         if(dp[i][j]!=-1){
             return dp[i][j];
-        if(k[i]==k1[j] || k[i]=='?')
-        {
-            return dp[i][j]=getans(i-1,j-1,dp);
+         }
+        
+        
+        
+        if(s[i]==p[j] || p[j]=='?'){
+            return dp[i][j]=f(i-1,j-1,s,p,dp);
         }
-        else if(k[i]=='*')
-        {
-            return dp[i][j]=getans(i,j-1,dp) ||getans(i-1,j,dp);
+        
+        if(p[j]=='*'){
+            //2 options siuu
+            return dp[i][j]=f(i-1,j,s,p,dp) | f(i,j-1,s,p,dp);
         }
-        return dp[i][j]=0;
+        
+        return 0; //no match bc bhak xD
     }
+    
+    
     bool isMatch(string s, string p) {
-        k=p;
-        k1=s;
-        vector<vector<int>>dp(p.size(),vector<int>(s.size(),-1));
-        int l=getans(p.size()-1,s.size()-1,dp);
-        if(l)
-            return true;
-        else
-            return false;
+        int n=s.size();
+        int m=p.size();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        
+        return f(n-1,m-1,s,p,dp);
     }
 };
