@@ -1,37 +1,37 @@
 class Solution {
 public:
     
-    int f(int idx,vector<int>&prices,vector<vector<int>>&dp,int buy){
-        if(idx==prices.size()){
-            return 0; //khatam no more profit tata goodBye
+    int f(int idx,int buy,vector<int>&prices,vector<vector<int>>&dp){
+        if(idx>=prices.size()){
+            return 0; //no more profit sed
         }
-        
         if(dp[idx][buy]!=-1){
             return dp[idx][buy];
         }
+        int ans=0;
         if(buy){
-            //we can buy
-            int pick=f(idx+1,prices,dp,0)-prices[idx];
-            int notpick=f(idx+1,prices,dp,1);
-            return dp[idx][buy]=max(pick,notpick);
+            int notpick=f(idx+1,buy,prices,dp);
+            int pick=f(idx+1,0,prices,dp)-prices[idx];
+            ans=max(pick,notpick);
         }
-        
-        int sell=f(idx+1,prices,dp,1)+prices[idx];
-        int notsell=f(idx+1,prices,dp,0);
-        
-        return dp[idx][buy]=max(sell,notsell);
+        else{
+            int notsell=f(idx+1,buy,prices,dp);
+            int sell=f(idx+1,1,prices,dp)+prices[idx];
+            ans=max(sell,notsell);
+        }
+        return dp[idx][buy]=ans; //for each index explore all possibilites buy sell or not xD
     }
     
+    
     int maxProfit(vector<int>& prices) {
-        //split into 2 options buy or sell if buy buy or not if sell sell now or not siu
+        //rmemeber in stock cant do top down n-1 m-1 since we didnt buy stock kaise predict the future sed
         
-        //i guess memoize with buy and sell variable only HmMMm
+        //two options buy or sell if i can buy or sell should i tAke the decision or not xD
         
+        //if else conditionts remember to explore all possibilites siu
         int n=prices.size();
-        vector<vector<int>>dp(n,vector<int>(2,-1)); //2 OPTIONS buy or sell
+        vector<vector<int>>dp(n+1,vector<int>(2,-1)); //1 for buy 0 for sell xD
         
-        //ooh we cannot go top down recursion common sense we cannot sell before buyinh OOH 
-        
-        return f(0,prices,dp,1);
+        return f(0,1,prices,dp);
     }
 };
