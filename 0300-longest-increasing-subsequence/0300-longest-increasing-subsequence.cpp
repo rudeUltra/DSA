@@ -1,24 +1,19 @@
 class Solution {
 public:
-    int f(int i,int prev,vector<int>&nums,vector<vector<int>>&dp){
-        if(i==nums.size()){
-            return 0; //no more subsequences can be made sed
-        }
-        if(dp[i][prev+1]!=-1){
-            return dp[i][prev+1];
-        }
-        
-        int notpick=0+f(i+1,prev,nums,dp);
-        int pick=0;
-        if(prev==-1 || nums[i]>nums[prev]){
-            pick=f(i+1,i,nums,dp)+1;
-        }
-        return dp[i][prev+1]=max(pick,notpick);
-    }
-    
     int lengthOfLIS(vector<int>& nums) {
+        //LETS try bottom up siu
         int n=nums.size();
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-        return f(0,-1,nums,dp);
+        vector<int>dp(n,1); //initially 1 size xD
+        int mx=dp[0];
+        for(int i=1;i<n;++i){
+            for(int j=0;j<i;++j){
+                if(nums[i]>nums[j]){
+                    dp[i]=max(dp[i],dp[j]+1);
+                   
+                }
+                 mx=max(mx,dp[i]);
+            }
+        }
+        return mx;
     }
 };
