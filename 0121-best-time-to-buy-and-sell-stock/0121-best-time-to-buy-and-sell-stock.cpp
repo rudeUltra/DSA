@@ -10,5 +10,6 @@ public:
             ans=max(ans,(prices[i]-mn));
         }
         return ans;
+        //basically buy the cheapest stock siuu
     }
 };
