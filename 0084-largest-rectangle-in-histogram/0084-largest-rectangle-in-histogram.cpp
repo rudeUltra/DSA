@@ -1,64 +1,40 @@
 class Solution {
-    vector<int> nextsmall(vector<int>& arr,int n){
-         stack<int> s;
-    s.push(-1);
-        vector<int> ans(n);
-        for(int i=arr.size()-1;i>=0;i--){
-           
-            while(s.top()!=-1&&arr[s.top()]>=arr[i])
-            s.pop();
-            if(s.empty()){
-            ans[i]=arr[i];
-            s.push(arr[i]);
-            }
-            else
-            {
-            ans[i]=s.top();
-            s.push(i);
-            
-            }
-            
-        }
-        return ans;
-    }
-    vector<int> prevsmall(vector<int>& arr,int n){
-         stack<int> s;
-    s.push(-1);
-        vector<int> ans(n);
-        for(int i=0;i<n;i++){
-           
-            while(s.top()!=-1&&arr[s.top()]>=arr[i])
-            s.pop();
-            if(s.empty()){
-            ans[i]=arr[i];
-            s.push(arr[i]);
-            }
-            else
-            {
-            ans[i]=s.top();
-            s.push(i);
-            
-            }
-            
-        }
-        return ans;
-    }
 public:
     int largestRectangleArea(vector<int>& heights) {
-        int area=0;
-        int n =heights.size();
-        vector<int> next(n);
-        vector<int> prev(n);
-        next=nextsmall(heights,n);
-        prev=prevsmall(heights,n);
-        for(int i=0;i<n;i++){
-            int l=heights[i];
-            if(next[i]==-1)
-            next[i]=n;
-             int b=next[i]-prev[i]-1;
-             int newarea=l*b;
-             area=max(newarea,area);
+        //we traverse till n because have to take care of remaining elements in the stack SIUU
+
+        //Optimised version of left smaller and right smaller we know the right smaller using 1 stack INcreasing order
+
+        //for the left smaller we will use the second element of the stack since its an increasing stack Siuuu
+
+        //Before popping each element try finding its area right smaller will be the i or the current element
+
+        //dont go to each element but when popping same concept How can i HELP U :) when we find the next smaller try finding areas of all the heights before popping them and store the ans
+
+        //edge case would be after the iteration some elements would be remaining in the stack so take care of them their area also
+
+        int n=heights.size();
+        int ans=INT_MIN;
+        stack<int>st;
+        for(int i=0;i<=n;++i){
+            while(!st.empty() && (i==n || heights[st.top()]>heights[i])){
+                //maintain increasing order
+                int height=heights[st.top()];
+                st.pop();
+                int width=0;
+                if(st.empty()){
+                    width=i;
+                }
+                else{
+                    width=i-st.top()-1; //st.top represent the other element not popping just taking the value OOh
+                }
+                
+
+                int area=width*height;
+                ans=max(ans,area);
+            }
+            st.push(i);
         }
-        return area;
+        return ans;
     }
 };
