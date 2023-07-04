@@ -67,9 +67,14 @@ public:
     void put(int key, int value) {
         //one thing is certain this value will be added xD
         if(mp.find(key)!=mp.end()){
+            
             remove(mp[key]);
+            mp[key]->val=value;
         }
-        mp[key]=new Node(key,value);
+        else{
+           mp[key]=new Node(key,value);
+        }
+        
         add(mp[key]);
             
         if(mp.size()>cap){
