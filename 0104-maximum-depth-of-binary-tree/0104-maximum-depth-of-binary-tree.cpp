@@ -12,13 +12,13 @@
 class Solution {
 public:
     int maxDepth(TreeNode* root) {
+        //max depth WWOooh post order a lot of questions from this pattern Hm
         if(root==NULL){
-            return 0;
+            return 0; //sus
         }
-        //post order
         int left=maxDepth(root->left);
         int right=maxDepth(root->right);
         
-        return 1+max(left,right); //left or right subtree height greater sus
+        return 1+max(left,right);
     }
 };
