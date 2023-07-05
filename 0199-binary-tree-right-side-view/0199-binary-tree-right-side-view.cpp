@@ -12,18 +12,39 @@
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        vector<int> ans;
-        right(root,0,ans);
-        return ans;
-    }
-    void right(TreeNode*root,int level,vector<int>&ans){
+        //basically the last element in the level order
+        //for left right use level order for top and bottom use vertical order siu
+        
+        vector<int>ans;
+        queue<TreeNode*>pq;
+        
         if(root==NULL){
-            return;
+            return ans; //NOLL
         }
-        if(ans.size()==level){
-            ans.push_back(root->val);
+        
+        pq.push(root);
+        
+        while(!pq.empty()){
+            int n=pq.size();
+            int i=0;
+            while(i<n){
+                auto it=pq.front();
+                pq.pop();
+                
+                if(i==n-1){
+                    ans.push_back(it->val); //last value of level siu
+                }
+                
+                if(it->left){
+                    pq.push(it->left);
+                }
+                if(it->right){
+                    pq.push(it->right);
+                }
+                ++i;
+            }
         }
-        right(root->right,level+1,ans);
-        right(root->left,level+1,ans);
+        return ans;
+        
     }
 };
