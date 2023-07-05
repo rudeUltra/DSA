@@ -20,6 +20,7 @@ public:
         int right=max(0,f(root->right,ans)); // 0 to avoid taking negative paths hm
 
         ans=max(ans,left+right+root->val);
+        //no point of taking a negative paths even if all nodes are negative max will be just the root val return it siu
 
         return max(left,right)+root->val;
     }
