@@ -21,6 +21,7 @@ public:
         count++;
         if(count==k){
             ans=root->val;
+            return;
             
         }
         
