@@ -16,11 +16,22 @@ public:
     
     vector<vector<int>> subsets(vector<int>& nums) {
         //lets try 2 ways 1st pick not pick then bit monipulation xD
-        vector<int>temp;
+     
         vector<vector<int>>ans;
         int n=nums.size();
         
-        dfs(0,nums,temp,ans);
+        for(int i=0;i<(1<<n);++i){
+            //check for each i positions siu
+            vector<int>temp;
+            for(int j=0;j<n;++j){
+                if(i&(1<<j)){
+                    //check if ith bit is set or not siu
+                    temp.push_back(nums[j]);
+                }
+            }
+        ans.push_back(temp);
+                
+        }
         
         return ans;
     }
