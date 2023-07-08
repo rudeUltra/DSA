@@ -1,22 +1,23 @@
 class Solution {
 public:
     long long putMarbles(vector<int>& weights, int k) {
-        // We collect and sort the value of all n - 1 pairs.
-        int n = weights.size();
-        vector<int> pairWeights(n - 1, 0);
-        for (int i = 0; i < n - 1; ++i) {
-            pairWeights[i] += weights[i] + weights[i + 1];
-        }
-        
-        sort(pairWeights.begin(), pairWeights.end());
-        
-        // Get the difference between the largest k - 1 values and the 
-        // smallest k - 1 values.
-        long long answer = 0;
-        for (int i = 0; i < k - 1; ++i) {
-            answer += pairWeights[n - 2 - i] - pairWeights[i];
-        }
-
-        return answer;
+priority_queue<int> pq1;
+    priority_queue<int, vector<int>, greater<int>> pq2;k--;
+   for (int i = 0; i < weights.size() - 1; i++) {
+    pq1.push(weights[i] + weights[i + 1]);
+    pq2.push(weights[i] + weights[i + 1]);
+    if (pq1.size() > k ) {
+        pq1.pop();
+        pq2.pop();
+    }
+    }
+   long long ans1 = 0, ans2 = 0;
+   while (!pq1.empty()) {
+    ans1 += pq1.top();
+    ans2 += pq2.top();
+    pq1.pop();
+    pq2.pop();
+   }
+    return ans2 - ans1;
     }
 };
