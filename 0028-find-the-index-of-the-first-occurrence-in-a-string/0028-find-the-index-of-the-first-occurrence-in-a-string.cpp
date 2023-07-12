@@ -3,23 +3,49 @@ public:
     int strStr(string haystack, string needle) {
         int n=haystack.length();
         int m=needle.length();
-        if(m==0){
-            return 0;
+        vector<int>lps(m,0);
+        int prevlps=0;
+        int i=1;
+        
+        while(i<m){
+            if(needle[i]==needle[prevlps]){
+                lps[i]=1+prevlps;
+                prevlps++;
+                i++;
+            }
+            else if(prevlps==0){
+                lps[i]=0;
+                i++;
+            }
+            else{
+                prevlps=lps[prevlps-1];
+            }
         }
-        if(m>n){
-            return -1;
-        }
-        for(int i=0;i<=n-m;++i){
-            int j=0;
-            for(;j<m;++j){
-                if(haystack[i+j]!=needle[j]){
-                    break;
+        
+        i=0;
+        int j=0;
+        
+        while(i<n){
+            if(haystack[i]==needle[j]){
+                ++i;
+                ++j;
+            }
+            
+            else{
+                if(j==0){
+                    ++i;
+                }
+                else{
+                    j=lps[j-1];
                 }
             }
+            
+            
             if(j==m){
-                return i;
+                return i-m;
             }
         }
+        
         return -1;
         
     }
