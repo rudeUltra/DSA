@@ -1,46 +1,53 @@
 class Solution {
 public:
-    bool dfs(int node,vector<vector<int>>&graph,vector<int>&visited,vector<int>&path,vector<int>&safe){
+    
+    bool dfs(int node,vector<int>&visited,vector<int>&path,vector<int>&ans,vector<int>adj[]){
         visited[node]=1;
         path[node]=1;
         
-        for(auto it:graph[node]){
-            if(visited[it]==0 && dfs(it,graph,visited,path,safe)){
-                safe[node]=0; //not safe sed
-                return true;
+        for(auto it:adj[node]){
+            if(visited[it]==0){
+                if(dfs(it,visited,path,ans,adj)==false){
+                    return false; //any child returning false sed
+                }
             }
             else if(visited[it]==1 && path[it]==1){
-                //ccycle fuck
-                safe[node]=0;
-                return true;
+                //cycle sed
+                return false;
             }
         }
         
-        safe[node]=1; //no cycle xD
         path[node]=0;
-        return false;
+        ans.push_back(node);
+        return true;
     }
     
+    
+    
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        //basically detect cycle with a little twist an extra safe array i suppose hm
+        //cycle edit hm
         int n=graph.size();
-        vector<int>visited(n,0);
-        vector<int>path(n,0);
-        vector<int>safe(n,1); //all safe currently
+        vector<int>adj[n];
         
         for(int i=0;i<n;++i){
-            if(visited[i]==0){
-                dfs(i,graph,visited,path,safe);
+            int m=graph[i].size();
+            for(int j=0;j<m;++j){
+                adj[i].push_back(graph[i][j]);
             }
         }
         
         vector<int>ans;
+        vector<int>visited(n,0);
+        vector<int>path(n,0); 
+        
+        //there should be no cycles siu
+        
         for(int i=0;i<n;++i){
-            if(safe[i]==1){
-                ans.push_back(i);
+            if(visited[i]==0){
+                dfs(i,visited,path,ans,adj);
             }
         }
-        
+        sort(ans.begin(),ans.end());
         return ans;
     }
 };
