@@ -1,18 +1,16 @@
 class Solution {
 public:
-    
-    bool dfs(int node,vector<int>adj[],vector<int>&vis,vector<int>&path){
-        vis[node]=1; //siu
+    bool dfs(int node,vector<int>adj[],vector<int>&visited,vector<int>&path){
+        visited[node]=1;
         path[node]=1;
         
-        for(auto it:adj[node]){
-            if(vis[it]==0){
-                //not visited
-                if(dfs(it,adj,vis,path)==true){
+        for(auto it : adj[node]){
+            if(visited[it]==0){
+                if(dfs(it,adj,visited,path)==1){
                     return true;
                 }
             }
-            else if(vis[it]==1 && path[it]==1){
+            else if(visited[it]==1 && path[it]==1){
                 return true;
             }
         }
@@ -20,30 +18,28 @@ public:
         path[node]=0;
         return false;
     }
+    
+    
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        //basically detect cycles siu in a directed graph
-        
-        //if we are in a loo/cycle obvs we can never finish all courses because deadlock condition
-        
+        //directed graph cycle detection sIUU
+        int n=prerequisites.size();
         vector<int>adj[numCourses];
         
-        int n=prerequisites.size();
-        
         for(int i=0;i<n;++i){
-            adj[prerequisites[i][1]].push_back(prerequisites[i][0]);
+            adj[prerequisites[i][0]].push_back(prerequisites[i][1]);
         }
-        //mai kyaa karu mai kyaaa karu :)
         
-        vector<int>vis(numCourses,0);
+        vector<int>visited(numCourses,0);
         vector<int>path(numCourses,0);
         for(int i=0;i<numCourses;++i){
-            if(dfs(i,adj,vis,path)==true){
-                return false;
+            if(visited[i]==0){
+                if(dfs(i,adj,visited,path)==1){
+                    return false;
+                }
             }
         }
         
-        return true; // no cycle we can complete siu
-        
-        
+        return true; //no cycle siu
+    
     }
 };
