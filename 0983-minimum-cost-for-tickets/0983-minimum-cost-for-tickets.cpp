@@ -4,13 +4,16 @@ public:
         if(idx>=days.size()){
             return 0; //min type
         }
+        
+        
         if(days[idx]<=count){
             return f(idx+1,days,costs,count,dp); //skip the day
         }
-        
-        if(dp[idx]!=-1){
+                if(dp[idx]!=-1){
             return dp[idx];
         }
+
+        
         
         int oneday=f(idx+1,days,costs,count,dp)+costs[0];
         int sevday=f(idx+1,days,costs,days[idx]+6,dp)+costs[1];
