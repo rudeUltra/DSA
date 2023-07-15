@@ -1,34 +1,47 @@
 class Solution {
 public:
-    int solve(int i,int end,vector<vector<int>>& events, int k, vector<vector<int>>&dp)
-    {
-        if(i>=events.size())
-        {
+    
+    
+    int f(int idx,vector<vector<int>>& events,int prev,int k,vector<vector<int>>&dp){
+        
+        if(idx>=events.size()){
             return 0;
         }
-        if(k==0)
-        {
+        
+        if(k==0){
             return 0;
         }
-        if(events[i][0]<=end)
-            return solve(i+1,end,events,k,dp);
-        if(dp[i][k]!=-1)
-            return dp[i][k];
-        int ans=0;
-        if(events[i][0]>end&&k>0)
-        {
-            ans=max(ans,events[i][2]+solve(i+1,events[i][1],events,k-1,dp));
+        
+       
+        if(events[idx][0]<=prev){
+            return f(idx+1,events,prev,k,dp);
+        }
+         if(dp[idx][k]!=-1){
+            return dp[idx][k];
+        }
+      
+        
+        //if we choose then set prev ok
+        
+        int notpick=f(idx+1,events,prev,k,dp)+0;
+        int pick=-99;
+        
+        if(events[idx][0]>prev){
+            pick=f(idx+1,events,events[idx][1],k-1,dp)+events[idx][2];
         }
         
-       ans=max(ans,solve(i+1,end,events,k,dp));
-        return dp[i][k]=ans;
         
+        return dp[idx][k]=max(pick,notpick);
     }
     
     int maxValue(vector<vector<int>>& events, int k) {
-     
+        int n=events.size();
+        vector<vector<int>>dp(n+1,vector<int>(k+1,-1));
         sort(events.begin(),events.end());
- vector<vector<int>> dp(events.size()+1,vector<int> (k+1,-1));
-        return solve(0,0,events,k,dp);
+        
+        
+       
+        
+        return f(0,events,-1,k,dp);
     }
 };
