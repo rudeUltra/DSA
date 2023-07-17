@@ -8,8 +8,10 @@ public:
         return stringmatch(n-1,m-1,word1,word2,dp);
     }
     int stringmatch(int i,int j,string word1,string word2,vector<vector<int>>&dp){
+        
+        
         if(i<0){
-            return j+1;
+            return j+1; //even if minus then -1 + 1 =0 xD
         }
         if(j<0){
             return i+1;
