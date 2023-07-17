@@ -1,35 +1,19 @@
 class Solution {
-public:
-    unordered_map<string,bool> ump;
-    bool isScrambled(string s1, string s2){
-        if(s1.size() != s2.size()) return false;
-        int n = s1.size();
-        if(s1==s2 or n==0) return true;
-        
-        string key = s1+" "+s2;
-        if(ump.find(key) != ump.end()) return ump[key];
-        
-        
-        bool flag = false;
-        for(int i=1;i<n;i++){
-            //for swaped string
-            if(isScrambled(s1.substr(0,i),s2.substr(n-i,i)) and isScrambled(s1.substr(i,n-i),s2.substr(0,n-i))){
-                flag|=true;
-                break;
-            }
+    bool dfs(string s, string t, unordered_map<string, bool> &dp) {
+        if(s == t) return true;
+        if(dp.find(s + " " + t) != dp.end()) return dp[s + " " + t];
 
-            //for unswaped string
-            if(isScrambled(s1.substr(0,i),s2.substr(0,i)) and isScrambled(s1.substr(i,n-i),s2.substr(i,n-i))){
-                flag|=true;
-                break;
-            }
+        int n = s.size();
+        for(int k=1; k<n; k++) {
+            bool notswap = dfs(s.substr(0, k), t.substr(0, k), dp) && dfs(s.substr(k), t.substr(k), dp);
+            bool swap = dfs(s.substr(0, k), t.substr(n - k), dp) && dfs(s.substr(k), t.substr(0, n - k), dp);
+            if(swap || notswap) return dp[s + " " + t] = true;
         }
-        ump[key]=flag;
-        return flag;
+        return dp[s + " " + t] = false;
     }
-    
+public:
     bool isScramble(string s1, string s2) {
-        if(s1.size() != s2.size()) return false;
-        return isScrambled(s1,s2);
+        unordered_map<string, bool> dp;
+        return dfs(s1, s2, dp);
     }
 };
