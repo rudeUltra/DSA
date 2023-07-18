@@ -1,16 +1,21 @@
-
 class Node{
-  public:
-   
-    int val;
+    
+    public:
     int key;
-    Node*prev;
-    Node*next; //DOubly Linked List THey dont love they don love it 
-     Node(int key1,int val1){
-         key=key1;
-         val=val1;
+    int val;
+    Node *prev;
+    Node *next;
+    
+    Node(){
         prev=NULL;
         next=NULL;
+    }
+    
+    Node(int key1,int val1){
+        prev=NULL;
+        next=NULL;
+        key=key1;
+        val=val1;
     }
     
 };
@@ -19,53 +24,54 @@ class Node{
 
 class LRUCache {
 public:
-    
+    Node*left=new Node();
+    Node*right=new Node();
+    int cap=0;
     unordered_map<int,Node*>mp;
-    Node *left,*right;
-    
-    //right signifies most recently used left means least recently used siu
-    
-    int cap;
-    
-    
-    void remove(Node*curr){
-        curr->prev->next=curr->next;
-        curr->next->prev=curr->prev; //sacrifice gg
-        
-    }
-    
-    void add(Node *curr){
-        Node*nxt=right;
-        Node*prv=right->prev;
-        
-        prv->next=curr;
-        nxt->prev=curr;
-        
-        curr->next=nxt;
-        curr->prev=prv;
-    }
-    
     LRUCache(int capacity) {
-        cap=capacity; //COnstructor siuu
-        left=new Node(0,0);
-        right=new Node(0,0);
+        cap=capacity;
         left->next=right;
         right->prev=left;
     }
     
+    
+    
+    
+    
+    void remove(Node *curr){
+        //from curr position
+        curr->prev->next=curr->next;
+        curr->next->prev=curr->prev;
+    }
+    
+    void add(Node *curr){
+        //always to the right
+        Node*right1=right;
+        Node *prev1=right->prev;
+        
+        curr->next=right1;
+        curr->prev=prev1;
+        
+        prev1->next=curr;
+        right->prev=curr;
+        
+    }
+    
+    
     int get(int key) {
-        //2 cases check if key exists if it does move it to the most used siu
+        //check map hm
         if(mp.find(key)==mp.end()){
             return -1;
         }
-        remove(mp[key]); //remove from current pos first then
-        add(mp[key]); //move to most recently used
+        int ans=mp[key]->val;
+        remove(mp[key]);
+        add(mp[key]); //most recently used
         
-        return mp[key]->val;
+        return ans;
+        
     }
     
     void put(int key, int value) {
-        //one thing is certain this value will be added xD
         if(mp.find(key)!=mp.end()){
             
             remove(mp[key]);
@@ -81,11 +87,12 @@ public:
             //stop the cap xD
             Node*lru=left->next;
             remove(lru); //least recently used siu
-            mp.erase(lru->key);
+            mp.erase(lru->key); //to reduce the size of the map we need the key valUE HmmM
           
         }
         // cout<<cap<<" ";
-       
+        
+        
     }
 };
 
