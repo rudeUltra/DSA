@@ -21,11 +21,12 @@ public:
         }
         //pick not pick
         
-        if(candidates[index]<=target){
+       
+        f(index+1,candidates,target,curr);
+         if(candidates[index]<=target){
             curr.push_back(candidates[index]);
             f(index,candidates,target-candidates[index],curr);
             curr.pop_back();
         }
-        f(index+1,candidates,target,curr);
     }
 };
