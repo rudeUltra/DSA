@@ -1,26 +1,29 @@
 class Solution {
 public:
-    vector<string>ans;
-    vector<string> generateParenthesis(int n) {
-        string temp;
-        f(0,0,n,temp);
-        return ans;
-    }
-    void f(int start,int close,int n,string curr){
-        if(curr.size()==n*2){
-            //max no of brackets will be n*2
-            ans.push_back(curr);
+    void f(int idx,int n,int open,int close,string temp,vector<string>&ans){
+        if(idx==2*n){
+            ans.push_back(temp);
             return;
         }
-        
-        if(start<n){
-            //we can add opening tags so
-            f(start+1,close,n,curr+'(');
+        if(open<n){
+            //hm
+            f(idx+1,n,open+1,close,temp+'(',ans);
         }
-        if(close<start){
-            //have to balance the brackets
-            
-            f(start,close+1,n,curr+')');
+        
+        if(close<open){
+            f(idx+1,n,open,close+1,temp+')',ans);
         }
     }
+    
+    vector<string> generateParenthesis(int n) {
+        //2 interesting observation edge case + decision
+        string temp;
+        vector<string>ans;
+        
+        f(0,n,0,0,temp,ans);
+        
+        return ans;
+    }
+    
+    
 };
