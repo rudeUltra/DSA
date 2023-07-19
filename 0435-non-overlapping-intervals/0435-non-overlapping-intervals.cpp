@@ -1,24 +1,22 @@
 class Solution {
 public:
     int eraseOverlapIntervals(vector<vector<int>>& intervals) {
-        int count=0;
+        //greedy min of the ends siu if intersecting/overlapping
         int n=intervals.size();
         sort(intervals.begin(),intervals.end());
-        int prevEnd =intervals[0][1];
-        
+        int prev=intervals[0][1];
+        int start=intervals[0][0];
+        int count=0;
         for(int i=1;i<n;++i){
-            int start=intervals[i][0];
-            int end=intervals[i][1];
-            
-            if(prevEnd > start){
-                //overlapping interval bruh
-                prevEnd = min(prevEnd,end);
+            if(prev>intervals[i][0]){
                 count++;
+                prev=min(prev,intervals[i][1]);
             }
             else{
-                prevEnd=end;
+                prev=intervals[i][1];
             }
         }
+        
         return count;
     }
 };
