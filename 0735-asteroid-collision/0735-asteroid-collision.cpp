@@ -1,68 +1,41 @@
 class Solution {
 public:
-    bool sign(int x,int y){
-        if((x<0 && y<0) || (x>0 && y>0)){
-            //same sign 
-            return true;
-        }
-        return false;
-    }
     vector<int> asteroidCollision(vector<int>& asteroids) {
-        //keep same sign values as it is siu
-
-        stack<int>st; //stack problem beacuse cancelling out xD we have to caNCEl some previous elements so to store them in the correct order we use a stack hm interesting
-        int n=asteroids.size();
-        for(int i=0;i<n;++i){
-            if(st.empty()){
-                st.push(i);
-            }
-            else if(sign(asteroids[st.top()],asteroids[i])){
-                //same sign so just push
-                st.push(i);
-            }
-            else{
-                //fight xD
-                int flag=1;
-                while(!st.empty() && !sign(asteroids[st.top()],asteroids[i])){
-                    int x=abs(asteroids[st.top()]);
-                    int y=abs(asteroids[i]);
-
-                    //different signs but wont collide beacuse of direction left and right hm
-                    if(asteroids[st.top()]<0 && asteroids[i]>0){
-                        break;
-                    }
-                    if(x<y){
-                        st.pop();
-                    }
-                    else if(x==y){
-                        st.pop();
-                        flag=0;
-                        break;
-                    }
-                    else{
-                        break;
-                        
-                    }
-                }
-                if(st.empty() && flag==1){
-                    st.push(i);
+        stack<int> st;
+        
+        for (int asteroid : asteroids) {
+            int flag = 1;
+            while (!st.empty() && (st.top() > 0 && asteroid < 0)) {
+                // If the top asteroid in the stack is smaller, then it will explode.
+                // Hence pop it from the stack, also continue with the next asteroid in the stack.
+                if (abs(st.top()) < abs(asteroid)) {
+                    st.pop();
                     continue;
                 }
-                if(!st.empty() && asteroids[st.top()]<0 && asteroids[i]>0 && flag==1){
-                        st.push(i);
-                    }
-                else if(!st.empty() && sign(asteroids[st.top()],asteroids[i]) && flag==1){
-                    st.push(i);
+                // If both asteroids are the same size, then both asteroids will explode.
+                // Pop the asteroid from the stack; also, we won't push the current asteroid to the stack.
+                else if (abs(st.top()) == abs(asteroid)) {
+                    st.pop();
                 }
+
+                // If we reach here, the current asteroid will be destroyed
+                // Hence, we should not add it to the stack
+                flag = 0;
+                break;
+            }
+            
+            if (flag) {
+                st.push(asteroid);
             }
         }
-        vector<int>ans;
-        while(!st.empty()){
-            ans.push_back(asteroids[st.top()]);
+        
+        // Add the asteroids from the stack to the vector in the reverse order.
+        vector<int> remainingAsteroids (st.size());
+        for (int i = remainingAsteroids.size() - 1; i >= 0; i--){
+            remainingAsteroids[i] = st.top();
             st.pop();
         }
-        reverse(ans.begin(),ans.end());
-
-        return ans;
+        
+        return remainingAsteroids;
     }
 };
