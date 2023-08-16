@@ -1,31 +1,30 @@
 class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-        //lets go xD
-        deque<int>dq;
+        //basically a stack question but we need the front guy so we use a dequeue otherwise no need
+        //brute force is to use a k sized heap but Tc will n log k
+        //lets begin
         int n=nums.size();
         vector<int>ans;
-
-        for(int i=0;i<n;++i){
-            if(!dq.empty() && dq.front()==i-k){
-                dq.pop_front();
-            }
-
-            //hello motherfucker xD delete all thhe elements which are lesser than i cuz they can never be the ans
-            while(!dq.empty() && nums[dq.back()]<=nums[i]){
-                dq.pop_back();
-            }
-
-            //only delete smaller then push even if we see next element or current in i++ being smaller than dequeue top we still push it because it can also be the ans in the future we dont know the top guy can get popped later if it is out of range
-
-            dq.push_back(i); 
+        deque<int>pq;
         
-
-        if(i>=k-1){
-            //proper size ahem so store the ans
-            ans.push_back(nums[dq.front()]); //front because we guarantee that the max will be here if another max was there it would have popped everyone then be in the front siuuu
+        for(int i=0;i<n;++i){
+            if(!pq.empty() && pq.front()+k<=i){
+                pq.pop_front();
+            }
+            
+            while(!pq.empty() && nums[pq.back()]<=nums[i]){
+                pq.pop_back();
+            }
+            //USELESS mofos xD
+             pq.push_back(i); //insert the current
+        
+            if(i>=k-1){
+                ans.push_back(nums[pq.front()]);
+            }
         }
-        }
+        
         return ans;
+        
     }
 };
