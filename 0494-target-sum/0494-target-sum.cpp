@@ -1,23 +1,30 @@
 class Solution {
-      
 public:
-     int solveMemo(int i,vector<int>& nums, int target,map<pair<int,int>,int>&dp){
-        if(i==nums.size()){
-            if(target==0)
-            return 1;
-            else 
+    
+    map<pair<int,int>,int>dp;
+    int f(int idx,vector<int>&nums,int target){
+        if(idx==nums.size()){
+            if(target==0){
+                return 1;
+            }
             return 0;
         }
-        if(dp.find({i,target})!=dp.end()) return dp[{i,target}];
-        int pos=solveMemo(i+1,nums,target-nums[i],dp);
-        int neg=solveMemo(i+1,nums,target-(-nums[i]),dp);
+        if(dp.find({idx,target})!=dp.end()){
+            return dp[{idx,target}];
+        }
+
+        int plus=f(idx+1,nums,target+nums[idx]);
+        int neg=f(idx+1,nums,target-nums[idx]);
         
-        return dp[{i,target}]=pos+neg;
+        return dp[{idx,target}]=plus+neg;
+        
     }
-        
+    
+    
     int findTargetSumWays(vector<int>& nums, int target) {
-    map<pair<int,int>,int>dp;
-        // return solve(0,nums,target);
-        return solveMemo(0,nums,target,dp);
+        //at every index we have 2 choices plus or minus siu
+        int n=nums.size();
+        
+        return f(0,nums,target);
     }
 };
