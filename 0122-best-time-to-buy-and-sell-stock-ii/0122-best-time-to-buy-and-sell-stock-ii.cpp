@@ -1,7 +1,9 @@
 class Solution {
 public:
-    int f(int idx,vector<int>&prices,int buy,vector<vector<int>>&dp){
+    
+    int f(int idx,vector<int>&prices,vector<vector<int>>&dp,int buy){
         if(idx>=prices.size()){
+            //no more profit bruh
             return 0;
         }
         
@@ -10,27 +12,28 @@ public:
         }
         int ans=0;
         if(buy){
-            int notpick=f(idx+1,prices,buy,dp);
-            int pick=f(idx+1,prices,0,dp)-prices[idx];
-            
-            ans=max(pick,notpick);
+            int yes=f(idx+1,prices,dp,0)-prices[idx];
+            int no=f(idx+1,prices,dp,buy);
+            ans=max(yes,no);
         }
         else{
-            int sell=f(idx+1,prices,1,dp)+prices[idx];
-            int notsell=f(idx+1,prices,buy,dp);
-            ans=max(sell,notsell);
+            //sell
+            int yes=f(idx+1,prices,dp,1)+prices[idx];
+            int no=f(idx+1,prices,dp,buy);
+            ans=max(yes,no);
         }
         
         return dp[idx][buy]=ans;
     }
     
     
-    
     int maxProfit(vector<int>& prices) {
+        //buy and sell multiple stocks 
         int n=prices.size();
-        vector<vector<int>>dp(n,vector<int>(2,-1));
         
-        return f(0,prices,1,dp);
+        vector<vector<int>>dp(n,vector<int>(2,-1)); //each index has 2 choices buy or sell
+        
+        return f(0,prices,dp,1);
         
     }
 };
