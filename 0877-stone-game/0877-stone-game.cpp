@@ -10,7 +10,7 @@ public:
     {
         // base cases
         if(l>h) return 0;
-        if(l==h) return piles[l];
+      
         
         // return precalculated result
         if(dp[l][h]!=-1) return dp[l][h];
