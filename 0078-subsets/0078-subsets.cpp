@@ -2,16 +2,17 @@ class Solution {
 public:
     
     void dfs(int idx,vector<int>&nums,vector<int>&temp,vector<vector<int>>&ans){
-        if(idx>=nums.size()){
-            ans.push_back(temp);
-            return;
+    
+                  ans.push_back(temp); 
+
+        //pick and not pick
+        
+        for(int i=idx;i<nums.size();++i){
+                temp.push_back(nums[i]);
+                dfs(i+1,nums,temp,ans);
+                temp.pop_back();
         }
         
-        //pick and not pick
-        temp.push_back(nums[idx]);
-        dfs(idx+1,nums,temp,ans);
-        temp.pop_back();
-        dfs(idx+1,nums,temp,ans);
     }
     
     vector<vector<int>> subsets(vector<int>& nums) {
@@ -19,19 +20,9 @@ public:
      
         vector<vector<int>>ans;
         int n=nums.size();
+        vector<int>temp;
         
-        for(int i=0;i<(1<<n);++i){
-            //check for each i positions siu
-            vector<int>temp;
-            for(int j=0;j<n;++j){
-                if(i&(1<<j)){
-                    //check if ith bit is set or not siu
-                    temp.push_back(nums[j]);
-                }
-            }
-        ans.push_back(temp);
-                
-        }
+        dfs(0,nums,temp,ans);
         
         return ans;
     }
