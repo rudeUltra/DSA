@@ -1,29 +1,52 @@
-class Solution{
-    public:
-    void dfs(string &num, int start, int target, string path, long prev, long cur, vector<string> &res) {
-	if(start == num.size() && prev + cur == target) res.push_back(path);
-
-	for(int i = 1; start + i <= num.size(); i++) {
-		string s = num.substr(start, i);
-		long n = stoll(s);
-		if(to_string(n).size() != s.size()) return;
-		if(!start) dfs(num, i, target, s, 0, n, res);
-		else {
-			dfs(num, start + i, target, path + "+" + s, prev + cur, n, res);
-			dfs(num, start + i, target, path + "-" + s, prev + cur, -n, res);
-			dfs(num, start + i, target, path + "*" + s, prev, cur * n, res);
-		}
-	}
-}
-
-vector<string> addOperators(string num, int target) {
-	vector<string> res;
-	dfs(num, 0, target, "", 0, 0, res);
-	return res;
-}
-
+class Solution {
+public:
     
+    vector<string> res;
+    
+    void helper(string str, int target, int i, string curr, long long res_so_far, long long prev_num)
+    {
+        if(i == str.size())
+        {
+            if(res_so_far == target)
+            {
+                res.push_back(curr);
+            }
+            
+            return;
+        }
+        
+        for(int j = i; j < str.size(); j++)
+        {
+            if(j > i && str[i] == '0')
+            {
+                break;
+            }
+            
+            string curr_str = str.substr(i, j - i + 1);
+            
+            long long curr_num = stoll(curr_str);
+            
+            if(i == 0)
+            {
+                helper(str, target, j + 1, curr + curr_str, curr_num, curr_num);
+            }
+            else
+            {
+                helper(str, target, j + 1, curr + "+" + curr_str, res_so_far + curr_num, curr_num);
+                
+                helper(str, target, j + 1, curr + "-" + curr_str, res_so_far - curr_num, -curr_num);
+                
+                helper(str, target, j + 1, curr + "*" + curr_str, res_so_far - prev_num + prev_num * curr_num, prev_num * curr_num);
+            }
+        }
+    }
+    
+    vector<string> addOperators(string str, int target) {
+        
+        int n = str.size();
+        
+        helper(str, target, 0, "", 0, 0);
+        
+        return res;
+    }
 };
-
-
-
