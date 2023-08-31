@@ -36,6 +36,10 @@ public:
         }
         node->flagSwitch();
     }
+    
+    
+    
+    
     bool helper(string word, TrieNode *node){
         for(int i=0;i<word.length();i++){
             if(word[i]=='.'){
