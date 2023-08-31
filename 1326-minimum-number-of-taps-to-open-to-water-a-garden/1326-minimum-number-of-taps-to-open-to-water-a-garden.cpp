@@ -16,6 +16,9 @@ public:
         }
         
         while (end_time < n) {
+            if(start_time<end_time){
+                return -1; //gap condition
+            }
             for (; i < intervals.size() && intervals[i][0] <= start_time; i++) {
                 end_time = max(end_time, intervals[i][1]);
             }
