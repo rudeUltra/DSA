@@ -16,7 +16,7 @@ public:
         }
         
         while (end_time < n) {
-            if(start_time<end_time){
+            if(start_time<intervals[i][0]){
                 return -1; //gap condition
             }
             for (; i < intervals.size() && intervals[i][0] <= start_time; i++) {
