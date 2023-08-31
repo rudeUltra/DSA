@@ -11,6 +11,10 @@ public:
         });
         int count = 0, start_time = 0, end_time = 0, i = 0;
         
+        for(auto it:intervals){
+            cout<<it[0]<<" "<<it[1];
+        }
+        
         while (end_time < n) {
             for (; i < intervals.size() && intervals[i][0] <= start_time; i++) {
                 end_time = max(end_time, intervals[i][1]);
