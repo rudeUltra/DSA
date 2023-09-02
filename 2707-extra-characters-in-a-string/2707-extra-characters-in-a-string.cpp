@@ -1,29 +1,40 @@
 class Solution {
 public:
-    int minExtraChar(string s, vector<string>& dictionary) {
-        int n=s.length();
-        
-        //siu
-        vector<int>dp(n+2,0); //for string
-        
-        if(s.length()<1){
-            return 0;
+    
+    int f(int idx,string &s,unordered_map<string,int>&mp,vector<int>&dp){
+        if(idx==s.size()){
+            return 0; //No more 
         }
         
-        for(int i=1;i<=n;++i){
-            dp[i]=dp[i-1]+1;
-            
-            for(auto it:dictionary){
-                
-                if(i>=it.length()){
-                    //match found
-                    if(s.substr(i-it.length(),it.length())==it){
-                        int k=i-it.length();
-                    dp[i]=min(dp[i],dp[k]);
-                    }
-                }
+        if(dp[idx]!=-1){
+            return dp[idx];
+        }
+        
+        int ans=1e5;
+        string temp="";
+        for(int i=idx;i<s.size();++i){
+            //Think of idx as the starting point siu
+            temp+=s[i];
+            int cost=(i-idx)+1;;
+            if(mp.find(temp)!=mp.end()){
+                cost=0;
             }
+            ans=min(ans,f(i+1,s,mp,dp)+cost);
         }
-        return dp[n];
+        return dp[idx]=ans;
+    }
+    
+    int minExtraChar(string s, vector<string>& dictionary) {
+        //lets think like Palindrome partition now siu
+        //If match then 0 else siu 
+        int n=dictionary.size();
+        vector<int>dp(s.size(),-1);
+        unordered_map<string,int>mp;
+        for(int i=0;i<n;++i){
+            mp[dictionary[i]]++;
+        }
+        
+        
+        return f(0,s,mp,dp);
     }
 };
