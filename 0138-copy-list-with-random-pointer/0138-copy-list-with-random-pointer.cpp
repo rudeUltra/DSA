@@ -17,25 +17,29 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        //basically just copy copy..ok
+        //Store everyones duplicate copies hm
         unordered_map<Node*,Node*>mp;
-        Node*curr=head;
         
+        Node*curr=head;
         while(curr){
             Node*temp=new Node(curr->val);
-            mp[curr]=temp; //my son xD
+            mp[curr]=temp;
             curr=curr->next;
         }
+        //Make the new List
+        Node *list=new Node(-1);
         
-        //basically in this loop give my son the connections xDD
         curr=head;
+        Node*temp=list;
         while(curr){
-            mp[curr]->next=mp[curr->next];
-            mp[curr]->random=mp[curr->random];
+            Node *curr2=mp[curr];
+            curr2->random=mp[curr->random];
+            curr2->next=mp[curr->next];
+            temp->next=curr2;
+            temp=curr2;
             curr=curr->next;
-            
         }
-        return mp[head];
         
+        return list->next;
     }
 };
