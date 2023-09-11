@@ -1,33 +1,34 @@
 class Solution {
 public:
-    void f(vector<int>&nums,vector<int>&used,vector<int>temp,vector<vector<int>>&ans){
+    
+    void f(vector<int>&nums,vector<int>&temp,vector<vector<int>>&ans,unordered_map<int,int>mp){
         if(temp.size()==nums.size()){
-            //all the characters are in siu
+            //All in
             ans.push_back(temp);
             return;
         }
-        
-        //Start from beginnning thats the tricky part hm
         for(int i=0;i<nums.size();++i){
-            if(used[i]==0){
-                used[i]=1;
-                temp.push_back(nums[i]);
-                f(nums,used,temp,ans);
+            if(mp[i]==0){
+                mp[i]++; //Use indexsed not numbers duplicates siu
+            temp.push_back(nums[i]);
+            f(nums,temp,ans,mp);
                 temp.pop_back();
-                used[i]=0;
+                mp[i]=0;
+                
             }
         }
     }
     
-    
     vector<vector<int>> permute(vector<int>& nums) {
-        //OH very Noice question hm
-        int n=nums.size();
-        vector<int>used(n,0);
+        //Permutation Hm
+        //BC XD
+        unordered_map<int,int>mp;
         vector<int>temp;
         vector<vector<int>>ans;
+        //No concept of idx because we have to come to the beginning evert time siu
         
-        f(nums,used,temp,ans);
+        f(nums,temp,ans,mp);
+        
         return ans;
     }
 };
