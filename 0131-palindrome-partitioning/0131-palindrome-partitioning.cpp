@@ -1,36 +1,41 @@
 class Solution {
 public:
-    
-    vector<vector<string>>ans;
-    vector<vector<string>> partition(string s) {
-        vector<string>temp;
-        f(0,s,temp);
-        return ans;
-    }
-    
-    void f(int index,string s,vector<string>&curr){
-        if(index==s.size()){
-            ans.push_back(curr);
-            return;
-        }
+    bool isValid(string temp){
+        int i=0;
+        int j=temp.size()-1;
         
-        for(int i=index;i<s.size();++i){
-            if(ispal(index,i,s)){
-                curr.push_back(s.substr(index,i-index+1));
-                f(i+1,s,curr);
-                curr.pop_back();
-            }
-        }
-    }
-    
-    bool ispal(int left,int right,string s){
-        while(left<right){
-            if(s[left]!=s[right]){
+        while(i<j){
+            if(temp[i]!=temp[j]){
                 return false;
             }
-            left++;
-            right--;
+            ++i;
+            --j;
         }
         return true;
+    }
+    void f(int idx,string s,vector<vector<string>>&ans,vector<string>&temp){
+        if(idx==s.size()){
+            ans.push_back(temp);
+            return;
+        }
+        //if no palindrome then dont worry single character case will be handled siu
+        for(int i=idx;i<s.size();++i){
+            string temp2=s.substr(idx,(i-idx+1));
+            if(isValid(temp2)){
+                temp.push_back(temp2);
+                f(i+1,s,ans,temp);
+                temp.pop_back();
+            }
+        }
+        
+    }
+    
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>>ans;
+        vector<string>temp;
+        //Forward partition siu
+        f(0,s,ans,temp);
+        
+        return ans;
     }
 };
