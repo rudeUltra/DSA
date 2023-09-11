@@ -1,30 +1,31 @@
 class Solution {
 public:
+    void dfs(int idx,vector<int>&candidates,int target,vector<int>&temp,vector<vector<int>>&ans){
+        if(target==0){
+            ans.push_back(temp);
+        }
+        int prev=-1;
+        for(int i=idx;i<candidates.size();++i){
+            if(candidates[i]!=prev && candidates[i]<=target){
+                temp.push_back(candidates[i]);
+                dfs(i+1,candidates,target-candidates[i],temp,ans);
+                temp.pop_back();
+            }
+            prev=candidates[i];
+        }
+        
+        
+    }
     
-    vector<vector<int>>ans;
+    
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        //sorting siuu to remove duplicates 
+        //Same as subset type but with an extra check if target is zero or not siu
+        vector<int>temp;
+        vector<vector<int>>ans;
         sort(candidates.begin(),candidates.end());
-        vector<int>curr;
-        f(0,candidates,target,curr);
+        
+        dfs(0,candidates,target,temp,ans);
+        
         return ans;
     }
-    void f(int index,vector<int>&candidates,int target,vector<int>&curr){
-        if(target==0){
-            ans.push_back(curr);
-            return;
-        }
-        int temp=-1;
-        for(int i=index;i<candidates.size();++i){
-            if(candidates[i]<=target && candidates[i]!=temp){
-                curr.push_back(candidates[i]);
-                f(i+1,candidates,target-candidates[i],curr);
-                curr.pop_back();
-            }
-            temp=candidates[i];
-        }
-    }
 };
-
-
-//1 2 2 2 5 t=5
