@@ -1,30 +1,38 @@
 class Solution {
 public:
     vector<string> findItinerary(vector<vector<string>>& tickets) {
-        unordered_map<string,multiset<string>>adj; //multiset to keep list sorted
         vector<string>ans;
-        int n=tickets.size();
-        for(int i=0;i<n;++i){
-            adj[tickets[i][0]].insert(tickets[i][1]);
+        unordered_map<string,multiset<string>>mp; //fOR Sortec
+        
+        for(int i=0;i<tickets.size();++i){
+            mp[tickets[i][0]].insert(tickets[i][1]);
         }
+        
+        //Stack so we can come back after travelling siu
         stack<string>st;
-        st.push("JFK"); //always start from JFK given siu
+        
+        st.push("JFK");
         
         while(!st.empty()){
-            string src=st.top();
-            if(adj[src].size()==0){
-                //no more paths so push it into the ans siu
-                ans.push_back(src);
+            string curr=st.top();
+            if(mp[curr].size()==0){
+                ans.push_back(curr);
                 st.pop();
             }
             else{
-                //nodes left traverse them
-                auto it=adj[src].begin();
-                st.push(*it);
-                adj[src].erase(it);
+                auto it=mp[curr].begin();
+                     st.push(*it);
+                     mp[curr].erase(it);
+                
+                
             }
+           
         }
         reverse(ans.begin(),ans.end());
+        
         return ans;
+        
+        
+        
     }
 };
