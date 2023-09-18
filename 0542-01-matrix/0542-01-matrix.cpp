@@ -1,48 +1,48 @@
 class Solution {
 public:
-    int m;
-    int n;
-    vector<vector<int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        m = mat.size();
-        n = mat[0].size();
-        vector<vector<int>> matrix(m, vector<int>(n, 0));
-        vector<vector<bool>> seen(m, vector<bool>(n, false));
-        queue<vector<int>> queue;
-
-        for (int row = 0; row < m; row++) {
-            for (int col = 0; col < n; col++) {
-                matrix[row][col] = mat[row][col];
-                if (matrix[row][col] == 0) {
-                    queue.push({row, col, 0});
-                    seen[row][col] = true;
+        int n=mat.size();
+        int m=mat[0].size();
+        
+        //should i put 1 or 0 in the matrix hm
+        vector<vector<int>>dist(n,vector<int>(m,1e5));
+        
+        //basically can i help plus ok i helped this guy can this guy help others siu
+        queue<pair<int,int>>pq;
+        for(int i=0;i<n;++i){
+            for(int j=0;j<m;++j){
+                if(mat[i][j]==0){
+                    pq.push({i,j});
+                    dist[i][j]=0;
                 }
             }
         }
-        
-        while (!queue.empty()) {
-            vector<int> curr = queue.front();
-            queue.pop();
-            int row = curr[0], col = curr[1], steps = curr[2];
+        vector<int>x{-1,0,1,0};
+        vector<int>y{0,1,0,-1};
+        //multiple starting points hm siu
+        while(!pq.empty()){
+            auto it=pq.front();
+            pq.pop();
             
-            for (vector<int>& direction: directions) {
-                int nextRow = row + direction[0], nextCol = col + direction[1];
-                if (valid(nextRow, nextCol) && !seen[nextRow][nextCol]) {
-                    seen[nextRow][nextCol] = true;
-                    queue.push({nextRow, nextCol, steps + 1});
-                    matrix[nextRow][nextCol] = steps + 1;
+            //four directions
+            int x1=it.first;
+            int y1=it.second;
+            
+            for(int i=0;i<4;++i){
+                int new_x=x1+x[i];
+                int new_y=y1+y[i];
+                
+                if(new_x>=0 && new_x<n && new_y>=0 && new_y<m){
+                    if(dist[x1][y1]+1<dist[new_x][new_y]){
+                        //I can help siu
+                        dist[new_x][new_y]=1+dist[x1][y1];
+                        pq.push({new_x,new_y});
+                    }
                 }
             }
         }
         
-        return matrix;
-    }
-    
-    bool valid(int row, int col) {
-        return 0 <= row && row < m && 0 <= col && col < n;
+        return dist;
+        
     }
 };
-
-
-
