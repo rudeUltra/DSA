@@ -1,7 +1,6 @@
 class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        
         unordered_map<string,int>mp;
         
         for(int i=0;i<wordList.size();++i){
@@ -9,40 +8,42 @@ public:
         }
         
         if(mp[endWord]==0){
-            return 0; //sed can't make string salam ALeekUM
+            return 0; //Bruh
         }
-        queue<string>pq;
-        pq.push(beginWord);
+        
+        //bc bfs and timers are really annoying xD but it is what it is
+        
         int steps=0;
+        queue<string>pq;
+        
+        pq.push(beginWord);
+        
         while(!pq.empty()){
             int n=pq.size();
-            for(int k=0;k<n;++k){
-                //check out all possibilities SIU
+            while(n--){
                 auto it=pq.front();
                 pq.pop();
                 if(it==endWord){
                     return steps+1;
                 }
-                int m=it.size();
-                for(int i=0;i<m;++i){
-                    //check each char siu
+                
+                for(int i=0;i<it.size();++i){
+                    //Try to replace each character siu
                     string temp=it;
-                    for(char ch='a';ch<='z';++ch){
-                        temp[i]=ch;
+                    for(char c='a';c<='z';++c){
+                        temp[i]=c;
                         if(mp.find(temp)!=mp.end()){
-                            //exists salam alekumm
+                            //SIUU
                             pq.push(temp);
                             mp.erase(temp);
                         }
+                        
                     }
                 }
-                
             }
-            
             steps++;
         }
+        
         return 0;
-        
-        
     }
 };
