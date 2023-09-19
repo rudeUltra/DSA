@@ -1,26 +1,35 @@
 class Solution {
 public:
-    int numDecodings(string s) {
-        int n=s.size();
-        vector<int>dp(n,0);
-        return dfs(0,s,dp);
-    }
-    int dfs(int i,string s,vector<int>&dp){
-        if(s[i]=='0'){
-            return 0; //not valid 06 
-        }
-        if(i==s.size()){
+    
+    int f(int idx,string &s,vector<int>&dp){
+        if(idx>=s.size()){
             return 1;
         }
-        if(dp[i]!=0){
-            return dp[i];
+        if(s[idx]=='0'){
+            return 0;
         }
-        int x=dfs(i+1,s,dp); //take single element
-        int y=0;
-        if(i+1<s.size() && ((s[i]=='1') || ((s[i]=='2') &&  s[i+1]<'7') )){
-            y=dfs(i+2,s,dp);
+        if(dp[idx]!=-1){
+            return dp[idx];
         }
-        dp[i]=x+y;
-         return dp[i];
+        
+        int one=f(idx+1,s,dp);
+        int two=0;
+        if(s[idx]=='1' || s[idx]=='2'){
+            if(idx<s.size()-1 && s[idx]=='1'){
+                two=f(idx+2,s,dp);
+            }
+            else if(idx<s.size()-1 && s[idx]=='2' && s[idx+1]<='6'){
+                two=f(idx+2,s,dp);
+            }
+        }
+        
+        return dp[idx]=one+two;
+    }
+    
+    int numDecodings(string s) {
+        int n=s.size();
+        vector<int>dp(n,-1);
+        
+        return f(0,s,dp);
     }
 };
