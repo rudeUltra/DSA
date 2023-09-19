@@ -1,20 +1,14 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        int duplicate = -1;
-        for (int i = 0; i < nums.size(); i++) {
-            int cur = abs(nums[i]);
-            if (nums[cur] < 0) {
-                duplicate = cur;
-                break;
+        //USE the indexses siu
+        for(int i=0;i<nums.size();++i){
+            int temp=abs(nums[i]);
+            if(nums[temp-1]<0){
+                return temp;
             }
-            nums[cur] *= -1;
+            nums[temp-1]=-nums[temp-1];
         }
-        
-        // Restore numbers
-        for (auto& num : nums)
-            num = abs(num);
-        
-        return duplicate;
+        return 1;
     }
 };
