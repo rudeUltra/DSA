@@ -1,30 +1,41 @@
 class Solution {
 public:
-    int f(int index,vector<int>&prices,vector<vector<int>>&dp,int buy){
-        //buy variable to determine we can buy a stock or not
-        if(index>=prices.size()){
-            return 0; //no more profit go back bc
+    
+    int f(int idx,vector<int>&prices,int buy,vector<vector<int>>&dp){
+        if(idx>=prices.size()){
+            //No more stocks left so no more profit
+            return 0;
         }
-        if(dp[index][buy]!=-1){
-            return dp[index][buy];
+        if(dp[idx][buy]!=-1){
+            return dp[idx][buy];
         }
-        int profit=0;
+        int ans=0;
         if(buy){
-            int x=f(index+1,prices,dp,0)-prices[index]; //we buy
-            int y=f(index+1,prices,dp,1); //we dont buy
-            profit=max(x,y);
+            int take=f(idx+1,prices,0,dp)-prices[idx];
+            int notpick=f(idx+1,prices,1,dp);
+            
+            ans=max(take,notpick);
         }
         else{
-            //we have to sell
-            int k=f(index+1,prices,dp,0); //not sell
-            int z=f(index+2,prices,dp,1)+prices[index]; //we sell
-            profit=max(k,z);
+             int take=f(idx+2,prices,1,dp)+prices[idx];
+            int notpick=f(idx+1,prices,buy,dp);
+            
+            ans=max(take,notpick);
         }
-        return dp[index][buy]=profit;
+        
+        return dp[idx][buy]=ans;
     }
+    
     int maxProfit(vector<int>& prices) {
+        //State management siu
+        //Cooldown basically means i+2 sed
+        //Here state is important either we are buying or selling doing 1 operation at a time not muktiple at one time siu
+        //Interesting we always have to start with buy cuz if we cant buy how can we sell lmao
+        
         int n=prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2,-1));
-        return f(0,prices,dp,1);
+        vector<vector<int>>dp(n,vector<int>(2,-1));
+        //2 states xD buy or sell at this index hm
+        
+        return f(0,prices,1,dp);
     }
 };
