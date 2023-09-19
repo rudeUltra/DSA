@@ -1,49 +1,39 @@
-//bottom-up approach
 class Solution {
+private: 
+    bool solve(vector<vector<bool>> &dp, int i, int j, string &s){
+        if(i == j){
+            return dp[i][j] = true;
+        }
+        if(j-i == 1){
+            if(s[i] == s[j]){
+                return dp[i][j] = true;
+            }
+            else{
+                return dp[i][j] = false;
+            }
+        }
+        if(s[i] == s[j] && dp[i+1][j-1] == true){
+            return dp[i][j] = true;
+        } else {
+            return dp[i][j] = false;
+        }
+    }
 public:
     string longestPalindrome(string s) {
         int n = s.size();
-        int start = 0; // Starting index of the longest palindromic substring
-        int longlen = 1; // Length of the longest palindromic substring (initialize to 1, as each character is a palindrome by itself)
-        
-        // Create a table to store the results of subproblems
-        vector<vector<bool>> t(n, vector<bool>(n, false));
-        
-        // All substrings of length 1 are palindromic
-        for (int i = 0; i < n; i++)
-            t[i][i] = true;
-        
-        // Check for substrings of length 2
-        for (int i = 0; i < n - 1; i++) 
-        {
-            if (s[i] == s[i + 1])
-            {
-                t[i][i+1] = true;
-                start = i;
-                longlen = 2;
-            }
-        }
-        
-        // Check for substrings of length 3 or more
-        for (int l = 3; l <= n; l++) 
-        {
-            for (int i = 0; i < n - l + 1; i++) 
-            {
-                int j = i + l - 1; // Ending index of the current substring
-                // Check if the substring from i to j is a palindrome
-                if (s[i] == s[j] && t[i + 1][j - 1]) 
-                {
-                    t[i][j] = true;
-                    if (l > longlen) 
-                    {
-                        longlen = l;
-                        start = i;
+        int startIndex = 0; int maxlen = 0;
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        for(int g=0; g<n; g++){
+            for(int i=0, j=g; j<n; i++, j++){
+                solve(dp, i, j, s);
+                if(dp[i][j] == true){
+                    if(j-i+1 > maxlen){
+                        startIndex = i;
+                        maxlen = j-i+1;
                     }
                 }
             }
         }
-        
-        //Extract the longest palindromic substring from original string
-        return s.substr(start, longlen);
+        return s.substr(startIndex, maxlen);
     }
 };
