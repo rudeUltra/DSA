@@ -9,7 +9,7 @@ public:
         }
         else{
             n=abs(n);
-            if(n%2==0)return 1/(myPow(x*x,n/2));
+            if(n%2==0)return 1/(myPow(x*x,n/2)); //for negative just do 1/pow siu
         else return 1/(x*myPow(x*x,n/2));
        
         }
