@@ -6,13 +6,14 @@ public:
         if(i >= n || j >= m) 
             return INT_MAX;
         if(i == n-1 && j == m-1) 
-            return grid[i][j] <= 0 ? abs(grid[i][j]) + 1 : 1;
+            return grid[i][j] <= 0 ? abs(grid[i][j]) + 1 : 1; //1 because we want the mIN siu
         if (dp[i][j] != -1) 
             return dp[i][j];
         int right = solve(grid, n, m, i, j+1);
         int down = solve(grid, n, m, i+1, j);
         int ans = min(right, down) - grid[i][j];
-        return dp[i][j] = ans <=0 ? 1 : ans;
+        return dp[i][j] = ans <=0 ? 1 : ans; //BC agar positive horaha meaning i can reach there with min 1 BIGGGEST BRAIN BRUH
+        //Kinda Greedy + DP
     }
     int calculateMinimumHP(vector<vector<int>> &dungeon) 
     {
