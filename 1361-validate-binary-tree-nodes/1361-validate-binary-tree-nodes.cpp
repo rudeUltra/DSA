@@ -1,81 +1,58 @@
-class Solution {
+class UnionFind {   
 public:
-    
-    bool dfs(int node,vector<int>&visited,vector<int>&path,vector<int>adj[],vector<int>&count){
-        visited[node]=1;
-        path[node]=1;
+    int components;
+    int n;
+    vector<int> parents;
+
+    UnionFind(int n) {
+        this->n = n;
+        parents = vector(n, 0);
+        components = n;
         
-        for(auto it:adj[node]){
-            count[it]++;
-            if(visited[it]==0){
-                if(dfs(it,visited,path,adj,count)){
-                    return true; //Cycle
-                }
-            }
-            else if(visited[it]!=0 && path[it]==1){
-                return true;
-            }
-            
+        for (int i = 0; i < n; i++) {
+            parents[i] = i;
         }
-        
-        //Explored this path so siuu
-        path[node]=0;
-        return false;
     }
     
-    
-    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
-        //looks doable siUUU
+    bool join(int parent, int child) {
+        int parentParent = find(parent);
+        int childParent = find(child);
         
-        vector<int>adj[n];
-        
-        for(int i=0;i<n;++i){
-            if(leftChild[i]!=-1){
-             adj[i].push_back(leftChild[i]);
-            }
-            if(rightChild[i]!=-1){
-                 adj[i].push_back(rightChild[i]);
-            }
-           
-        }
-        
-        //Single component + No cycles siu
-        
-        vector<int>visited(n,0);
-        vector<int>path(n,0);
-        vector<int>count(n,0);
-        int count2=0;
-        for(int i=0;i<n;++i){
-            
-           if(visited[i]==0 && count2!=0){
-               if( leftChild[i]!=-1 && visited[leftChild[i]]==0 && rightChild[i]!=-1 && visited[rightChild[i]]==0){
-                   return false;
-               }
-               if(dfs(i,visited,path,adj,count)){
-                    return false;
-                }
-               
-           }
-            if(visited[i]==0){
-                count2++;
-                if(dfs(i,visited,path,adj,count)){
-                    return false;
-                }
-               
-            }
-        }
-        int zeroRoot=0;
-        for(int i=0;i<n;++i){
-            if(count[i]==0){
-                zeroRoot++;
-            }
-            if(count[i]>1){
-                return false;
-            }
-        }
-        if(zeroRoot>1){
+        if (childParent != child || parentParent == childParent) {
             return false;
         }
+        
+        components--;
+        parents[childParent] = parentParent;
         return true;
+    }
+    
+    int find(int node) {
+        if (parents[node] != node) {
+            parents[node] = find(parents[node]);
+        }
+        
+        return parents[node];
+    }
+};
+
+class Solution {
+public:
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        UnionFind uf(n);
+        for (int node = 0; node < n; node++) {
+            int children[] = {leftChild[node], rightChild[node]};
+            for (int child : children) {
+                if (child == -1) {
+                    continue;
+                }
+                
+                if (!uf.join(node, child)) {
+                    return false;
+                }
+            }
+        }
+        
+        return uf.components == 1;
     }
 };
