@@ -17,29 +17,27 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        //Store everyones duplicate copies hm
+        //Teenage kicks the boy with the world at his feet Siuu
         unordered_map<Node*,Node*>mp;
-        
         Node*curr=head;
+        
         while(curr){
-            Node*temp=new Node(curr->val);
-            mp[curr]=temp;
+            mp[curr]=new Node(curr->val);
             curr=curr->next;
         }
-        //Make the new List
-        Node *list=new Node(-1);
+        Node *ans=new Node(-1);
         
-        curr=head;
-        Node*temp=list;
-        while(curr){
-            Node *curr2=mp[curr];
-            curr2->random=mp[curr->random];
-            curr2->next=mp[curr->next];
-            temp->next=curr2;
-            temp=curr2;
-            curr=curr->next;
+        Node*temp=ans;
+        
+        while(head){
+            temp->next=mp[head];
+            mp[head]->next=mp[head->next];
+            mp[head]->random=mp[head->random];
+            head=head->next;
+            temp=temp->next;
         }
+        return ans->next;
         
-        return list->next;
+        
     }
 };
