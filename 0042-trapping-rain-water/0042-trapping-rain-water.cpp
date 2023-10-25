@@ -2,35 +2,29 @@ class Solution {
 public:
     int trap(vector<int>& height) {
         int n=height.size();
-        vector<int>maxleft(n);
-        vector<int>maxright(n); //precompute
-
-        int mn=INT_MIN;
+        vector<int>left(n,-1);
+        vector<int>right(n,-1); //-1 bcus we need both left and right to store the water so siu
+        
+        int mx=INT_MIN;
+        
         for(int i=0;i<n;++i){
-            mn=max(mn,height[i]);
-            maxleft[i]=mn;
+            mx=max(mx,height[i]);
+            left[i]=mx;
         }
-
-        mn=INT_MIN;
-
+        mx=INT_MIN;
         for(int i=n-1;i>=0;--i){
-            mn=max(mn,height[i]);
-            maxright[i]=mn;
+            mx=max(mx,height[i]);
+            right[i]=mx;
         }
-        //calculate amount of water for each block siu
-
-        int ans=0;
-
+        int total=0;
+        
         for(int i=0;i<n;++i){
-            ans=ans+(min(maxright[i],maxleft[i])-height[i]);
+            int h=min(left[i],right[i]);
+            h=h-height[i];
+            total+=h;
         }
-
-        //since most of the max values are repeating we try to duplicate the max values instead of storing them using two pointers
-
-        //extra variables maxleft and maxright to assign max on the go dynamic instead of storing so saves a lot of time siu
-
-        //using two pointer before taking the ans we have to guarentee that water can be stored check left or right greater or not siu
-
-        return ans;
+       
+        
+        return total;
     }
 };
