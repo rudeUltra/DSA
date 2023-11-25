@@ -1,32 +1,49 @@
 class Solution {
 public:
     bool search(vector<int>& nums, int target) {
-        int l = 0, r = nums.size() - 1;
-        while (l <= r) {
-            while (l < r && nums[l] == nums[l + 1]) {
-                l++;
+        
+           int n=nums.size();
+        
+        int low=0;
+        int high=n-1;
+        
+        while(low<=high){
+            
+            
+            while (low < high && nums[low] == nums[low + 1]) {
+                low++;
             }
-            while (l < r && nums[r] == nums[r - 1]) {
-                r--;
+            while (low < high && nums[high] == nums[high - 1]) {
+                high--;
             }
-            int m = l + (r - l) / 2;
-            if (nums[m] == target) {
+            int mid=(low+(high-low)/2); //integer overflow Big brain
+            
+            if(nums[mid]==target){
                 return true;
             }
-            if (nums[m] > target) {
-                if (nums[l] > nums[m] || nums[l] <= target) {
-                    r = m - 1;
-                } else {
-                    l = m + 1;
+            
+            if(nums[mid]>=nums[low]){
+                //left part sorted
+                if(nums[low]<=target && target<=nums[mid]){
+                    high=mid-1;
                 }
-            } else {
-                if (nums[l] <= nums[m] || nums[l] > target) {
-                    l = m + 1;
-                } else {
-                    r = m - 1;
+                else{
+                    low=mid+1;
+                }
+            }
+            else{
+                //Right part is sorted hm
+                if(nums[mid]<=target && target<=nums[high]){
+                    low=mid+1;
+                }
+                else{
+                    high=mid-1;
                 }
             }
         }
+        
         return false;
+        
     }
+    
 };
