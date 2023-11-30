@@ -1,69 +1,69 @@
-class disjoint{
+class dsu{
     public:
-    vector<int>parent,size;
+    vector<int>parent,rank;
     
-    //constructor
-    disjoint(int n){
+    dsu(int n){
+        //siu
+        rank.resize(n,1);
         parent.resize(n);
-        size.resize(n,1);
         
         for(int i=0;i<n;++i){
-            parent[i]=i; //self parent 
-        }
-    }
-    
-    int find(int x){
-        if(parent[x]==x){
-            return x;
-        }
-        return parent[x]=find(parent[x]);
-    }
-    
-    void union1(int x,int y){
-        int par_x=find(x);
-        int par_y=find(y);
-        if(par_x==par_y){
-            return; //already connected
+            parent[i]=i;
         }
         
-        if(size[par_x]>size[par_y]){
-            //x is the bigger component so connect y to x
-            parent[par_y]=par_x;
-            size[par_x]=size[par_x]+size[par_y];
+        //Self parent hm
+    }
+    
+    int find(int node){
+        if(parent[node]==node){
+            return node;
+        }
+        
+        return parent[node]=find(parent[node]);
+    }
+    
+    void join(int x,int y){
+        int x1=find(x);
+        int x2=find(y);
+        
+        if(x1==x2){
+            return;
+        }
+        
+        if(rank[x1]>rank[x2]){
+            parent[x2]=x1;
         }
         else{
-            parent[par_x]=par_y;
-            size[par_y]=size[par_y]+size[par_x];
+            parent[x1]=x2;
         }
     }
 };
+
+
+
 class Solution {
 public:
     int makeConnected(int n, vector<vector<int>>& connections) {
-        //make disjoint set class siu
+        dsu ds(n);
         
-        //make the connection and count the extra siu
-        disjoint ds(n);
         int extra=0;
+        int components=0;
+        
         for(int i=0;i<connections.size();++i){
-            int x=connections[i][0];
-            int y=connections[i][1];
-            
-            if(ds.find(x)==ds.find(y)){
+            if(ds.find(connections[i][0])==ds.find(connections[i][1])){
                 extra++;
             }
             else{
-                ds.union1(x,y);
+                ds.join(connections[i][0],connections[i][1]);
             }
         }
-        int components=0;
         for(int i=0;i<n;++i){
             if(ds.parent[i]==i){
                 components++;
             }
         }
-        
-        if(extra>=components-1){
+        cout<<components<<extra<<" ";
+        if(components-1<=extra){
             return components-1;
         }
         
