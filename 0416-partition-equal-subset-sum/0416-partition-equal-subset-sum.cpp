@@ -1,41 +1,42 @@
 class Solution {
 public:
     
-    
-    bool f(int idx,vector<int>&nums,int target,vector<vector<int>>&dp){
+    int f(int idx,vector<int>&nums,vector<vector<int>>&dp,int target){
         if(target==0){
-            return true;
+            return 1;
         }
-        if(idx>=nums.size()){
-            return false;
+        if(idx==nums.size()){
+            return 0;
         }
         if(dp[idx][target]!=-1){
             return dp[idx][target];
         }
         
-        bool notpick=f(idx+1,nums,target,dp);
-        bool pick=false;
-        
+        //two options pick or not pick siu
+        int notpick=f(idx+1,nums,dp,target);
+        int pick=0;
         if(nums[idx]<=target){
-            pick=f(idx+1,nums,target-nums[idx],dp);
+            pick=f(idx+1,nums,dp,target-nums[idx]);
         }
         
         return dp[idx][target]=pick | notpick;
     }
     
+    
     bool canPartition(vector<int>& nums) {
-        //siu
         int n=nums.size();
+        
+        //Target sum hm which means pick or not pick siu
         int sum=0;
         for(int i=0;i<n;++i){
             sum+=nums[i];
         }
         
-        if(sum%2!=0){
-            //gotemm
-            return false; //cant divide into 2 subsets hm
+        if(sum%2==1){
+            return false;
         }
-        vector<vector<int>>dp(n,vector<int>(sum,-1));
-        return f(0,nums,sum/2,dp);
+        
+        vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        return f(0,nums,dp,sum/2);
     }
 };
