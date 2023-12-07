@@ -1,33 +1,35 @@
 class Solution {
 public:
     
-    void f(vector<int>&nums,vector<int>&temp,vector<vector<int>>&ans,unordered_map<int,int>mp){
+    
+    void f(vector<int>&nums,unordered_map<int,int>mp,vector<int>&temp,vector<vector<int>>&ans){
         if(temp.size()==nums.size()){
-            //All in
             ans.push_back(temp);
             return;
         }
+        
         for(int i=0;i<nums.size();++i){
             if(mp[i]==0){
-                mp[i]++; //Use indexsed not numbers duplicates siu
-            temp.push_back(nums[i]);
-            f(nums,temp,ans,mp);
-                temp.pop_back();
+                //take indexes not elements hm
+                mp[i]=1;
+                temp.push_back(nums[i]);
+                f(nums,mp,temp,ans);
+                temp.pop_back(); //backtrack
                 mp[i]=0;
-                
             }
         }
     }
     
     vector<vector<int>> permute(vector<int>& nums) {
-        //Permutation Hm
-        //BC XD
+        //2 ways either swap or map we use map xD
+        //Trick is to use for loop always from the starting index
+        
+        //Jamal kudul vibe hai xD
         unordered_map<int,int>mp;
         vector<int>temp;
         vector<vector<int>>ans;
-        //No concept of idx because we have to come to the beginning evert time siu
         
-        f(nums,temp,ans,mp);
+        f(nums,mp,temp,ans);
         
         return ans;
     }
