@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool isValid(string temp){
+    bool isPal(string &temp){
         int i=0;
         int j=temp.size()-1;
         
@@ -13,29 +13,39 @@ public:
         }
         return true;
     }
-    void f(int idx,string s,vector<vector<string>>&ans,vector<string>&temp){
+    void f(int idx,string &s,vector<string>&temp,vector<vector<string>>&ans){
         if(idx==s.size()){
             ans.push_back(temp);
             return;
         }
-        //if no palindrome then dont worry single character case will be handled siu
+        string temp1="";
         for(int i=idx;i<s.size();++i){
-            string temp2=s.substr(idx,(i-idx+1));
-            if(isValid(temp2)){
-                temp.push_back(temp2);
-                f(i+1,s,ans,temp);
+            temp1+=s[i];
+            if(isPal(temp1)){
+                temp.push_back(temp1);
+                f(i+1,s,temp,ans);
                 temp.pop_back();
             }
         }
         
     }
     
+    //Lets Gooo \U0001f60e
+    
     vector<vector<string>> partition(string s) {
-        vector<vector<string>>ans;
+        //I legit need to host my sites BC..
+        //let's do that only today let's host Kuebiko Siu
+        //Explore CHakraUI
+        
         vector<string>temp;
-        //Forward partition siu
-        f(0,s,ans,temp);
+        vector<vector<string>>ans;
+        
+        int n=s.size();
+        
+        f(0,s,temp,ans);
         
         return ans;
+        
+        
     }
 };
