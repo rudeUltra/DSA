@@ -1,30 +1,33 @@
 class Solution {
 public:
+     map<pair<int,int>,int>mp;
     
-    map<pair<int,int>,int>dp;
-    int f(int idx,vector<int>&nums,int target){
+    int f(int idx,int target,vector<int>&nums){
+        if(idx==nums.size() && target==0){
+            return 1; //Count DP
+        }
         if(idx==nums.size()){
-            if(target==0){
-                return 1;
-            }
             return 0;
         }
-        if(dp.find({idx,target})!=dp.end()){
-            return dp[{idx,target}];
+        
+        if(mp.find({idx,target})!=mp.end()){
+            return mp[{idx,target}];
         }
-
-        int plus=f(idx+1,nums,target+nums[idx]);
-        int neg=f(idx+1,nums,target-nums[idx]);
         
-        return dp[{idx,target}]=plus+neg;
+        int plus=f(idx+1,target-nums[idx],nums);
+        int neg=f(idx+1,target+nums[idx],nums);
         
+        
+        return mp[{idx,target}]=plus+neg;
     }
-    
-    
     int findTargetSumWays(vector<int>& nums, int target) {
-        //at every index we have 2 choices plus or minus siu
         int n=nums.size();
         
-        return f(0,nums,target);
+       
+        
+        
+        return f(0,target,nums);
+        
+        
     }
 };
