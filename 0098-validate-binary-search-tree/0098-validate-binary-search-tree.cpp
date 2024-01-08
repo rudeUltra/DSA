@@ -11,21 +11,25 @@
  */
 class Solution {
 public:
+    
+    bool validBst(TreeNode*root,long long left,long long right){
+        if(root==NULL){
+            return true; //gotemm
+        }
+        
+        if(root->val<=left || root->val>=right){
+            //Ayyo
+            return false;
+        }
+        
+        return validBst(root->left,left,root->val) && validBst(root->right,root->val,right);
+    }
+    
+    
     bool isValidBST(TreeNode* root) {
         if(root->left==NULL && root->right==NULL){
             return true;
         }
-        return valid(root,LONG_MIN,LONG_MAX);
+        return validBst(root,LONG_MIN,LONG_MAX);
     }
-    bool valid(TreeNode *root,long mn,long mx){
-        //maintain range ez
-        if(root==NULL){
-            return true;
-        }
-        if(root->val >=mx || root->val <=mn){
-            return false;
-        }
-        return valid(root->left,mn,root->val) && valid(root->right,root->val,mx);
-    }
-    
 };
