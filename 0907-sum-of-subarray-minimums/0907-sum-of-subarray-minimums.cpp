@@ -37,8 +37,13 @@ public:
         long long ans=0;
         int mod=1e9+7;
         
-        for(auto it:prev){
-            cout<<it<<" ";
+        for(int i=0;i<n;++i){
+            cout<<next[i]<<" ";
+        }
+        cout<<endl;
+        
+        for(int i=0;i<n;++i){
+            cout<<prev[i]<<" ";
         }
         for(int i=0;i<n;++i){
             ans=ans+((prev[i]+1)*(1LL)*(next[i]+1)*arr[i]); //multiply by arr[i] bcus we want sum siu
