@@ -1,29 +1,25 @@
 class Solution {
 public:
     
-    
     int f(int idx,vector<int>&nums,vector<int>&dp){
-        if(idx==nums.size()-1){
-            //Last house so rob it
-            return nums[idx];
-        }
         if(idx>=nums.size()){
-            return 0;
+            return 0; //Can't rob more duh
         }
+        
         if(dp[idx]!=-1){
-            return dp[idx]; //Memoize
+            return dp[idx];
         }
         
-        int notpick=f(idx+1,nums,dp);
-        int pick=f(idx+2,nums,dp)+nums[idx];
+        int rob=nums[idx]+f(idx+2,nums,dp);
+        int notrob=f(idx+1,nums,dp);
         
-        return dp[idx]=max(notpick,pick);
+        return dp[idx]=max(rob,notrob);
     }
+    
     int rob(vector<int>& nums) {
+        //pick not pick Noice
         int n=nums.size();
-        vector<int>dp(n+1,-1); //N+1 possible states
-        
-        //At this index what is the max profit i can get siu
+        vector<int>dp(n+1,-1);
         
         return f(0,nums,dp);
     }
