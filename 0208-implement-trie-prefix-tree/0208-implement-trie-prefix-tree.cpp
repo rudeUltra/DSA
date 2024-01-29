@@ -1,81 +1,100 @@
-
 class Node{
-  public:
-    Node *links[26];
-    int flag; //to mark the end of the word siu
+    public:
+    bool end;
+    Node* links[26]; //26 characters siu
+    
     
     Node(){
-        flag=0;
         for(int i=0;i<26;++i){
             links[i]=NULL;
         }
+        end=false;
     }
     
-    bool isset(char x){
-        int temp=x-'a';
-        if(links[temp]==NULL){
+    bool linkExists(char a){
+        if(links[a-'a']==NULL){
             return false;
         }
         return true;
     }
-    void create(char a,Node*temp){
-        links[a-'a']=temp;
-    }
-    Node* next(char a){
+    
+    Node* link(char a){
         return links[a-'a'];
     }
     
-    
+    void addLink(char a){
+        Node*temp=new Node();
+        links[a-'a']=temp;
+    }
+      
 };
-
 
 
 class Trie {
 public:
     
-    Node *root;
-    
+    Node*root;
     Trie() {
-        root=new Node();
+        root=new Node(); //aha root node gotemm
     }
     
     void insert(string word) {
-        Node*curr=root;
-        for(int i=0;i<word.size();++i){
-            if(curr->isset(word[i])==0){
-                //create a new link
-                Node*temp=new Node();
-                curr->create(word[i],temp);
+        int n=word.size();
+        
+        Node*root1=root; //point to the root hm
+        
+        for(int i=0;i<n;++i){
+            if(root1->linkExists(word[i])==false){
+                //sed no link
+                root1->addLink(word[i]);
             }
-            curr=curr->next(word[i]);
+            //next
+            root1=root1->link(word[i]);
         }
-        curr->flag=1;
+        
+        //aha
+        
+        root1->end=true; //word ends here
+        
     }
     
     bool search(string word) {
-        Node *curr=root;
-        for(int i=0;i<word.size();++i){
-            if(curr->isset(word[i])==0){
+        
+        int n=word.size();
+        Node*root1=root; //point to the root hm
+        
+        for(int i=0;i<n;++i){
+            if(root1->linkExists(word[i])==false){
+                //sed no link
                 return false;
             }
-            curr=curr->next(word[i]);
+            //next
+            root1=root1->link(word[i]);
         }
-        if(curr->flag==1){
-            return true;
-        }
-        return false;
+        
+        //aha
+        
+        return root1->end;
         
     }
     
     bool startsWith(string prefix) {
-        Node *curr=root;
-        for(int i=0;i<prefix.size();++i){
-            if(curr->isset(prefix[i])==0){
+        
+        int n=prefix.size();
+        Node*root1=root; //point to the root hm
+        
+        for(int i=0;i<n;++i){
+            if(root1->linkExists(prefix[i])==false){
+                //sed no link
                 return false;
             }
-            curr=curr->next(prefix[i]);
+            //next
+            root1=root1->link(prefix[i]);
         }
-        return true;
+        
+        //aha
+        
+        return true; //kUch to hoga Xd
         
     }
 };
