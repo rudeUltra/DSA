@@ -1,52 +1,70 @@
 class Solution {
 public:
-    
-    // Using BFS : 
-    int orangesRotting(vector<vector<int>>& grid) 
-    {
-        vector<int> dir={-1,0,1,0,-1}; // used for finding all 4 adjacent coordinates
-        int m=grid.size();
-        int n=grid[0].size();
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
         
-        queue<pair<int,int>> q;
-        int fresh=0;              // To keep track of all fresh oranges left
-        for(int i=0;i<m;i++)
-            for(int j=0;j<n;j++)
-            {
-                if(grid[i][j]==2)
-                    q.push({i,j}); // push all rotten oranges
-                if(grid[i][j]==1)
-                    fresh++;
-            }
+        int fresh_count=0;
+        int rotten_count=0;
         
-        int ans=-1; // initialised to -1 since after each step we increment the time by 1 and initially all rotten oranges started at 0.
+        queue<pair<int,int>>pq;
         
-        // BFS 
-        while(!q.empty())
-        {
-            int sz=q.size();
-            while(sz--)
-            {
-                auto p=q.front();
-                q.pop();
-                for(int i=0;i<4;i++)
-                {
-                    int r = p.first + dir[i];
-                    int c = p.second + dir[i+1];
-                    if(r>=0 && r<m && c>=0 && c<n && grid[r][c]==1)
-                    {
-                        grid[r][c]=2;
-                        q.push({r,c}); // push that rotten orange that becomes rotten from fresh
-                        fresh--;       // decrement by 1 for each fresh orange that now is rotten
-                    }
-                    
+        for(int i=0;i<n;++i){
+            for(int j=0;j<m;++j){
+                if(grid[i][j]==1){
+                    fresh_count++;
+                }
+                else if(grid[i][j]==2){
+                    //Multi source BFS HM nOice
+                    rotten_count++;
+                    pq.push({i,j});
                 }
             }
-            ans++; // incremented after each minute passes
+        }
+        if(fresh_count==0){
+            return 0;
         }
         
-        if(fresh>0) return -1; //if fresh>0 that means there are fresh oranges left
-        if(ans==-1) return 0; //we initialised with -1, so if there were no oranges it'd take 0 mins.
-        return ans;
+        if(rotten_count==0){
+            //BC
+            return -1;
+        }
+        int timer=0;
+        
+        while(!pq.empty()){
+            int k=pq.size(); //level order type Noice
+            
+            if(fresh_count==0){
+                return timer;
+            }
+            
+            for(int i=0;i<k;++i){
+                auto it=pq.front();
+                pq.pop(); 
+                
+                int x=it.first;
+                int y=it.second; 
+                
+                //See can I contribute hM.
+                int dx[]={-1,0,1,0};
+                int dy[]={0,1,0,-1};
+                
+                for(int j=0;j<4;++j){
+                    int new_x=x+dx[j];
+                    int new_y=y+dy[j];
+                    
+                    if(new_x>=0 && new_x<n && new_y>=0 && new_y<m && grid[new_x][new_y]==1){
+                        //goteemm fresh orange Siu
+                        fresh_count--;
+                        grid[new_x][new_y]=2;
+                        pq.push({new_x,new_y});
+                    }
+                }
+                
+            }
+            timer++;
+        }
+        
+        return -1;
     }
 };
