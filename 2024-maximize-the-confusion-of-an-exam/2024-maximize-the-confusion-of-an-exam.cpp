@@ -17,7 +17,7 @@ public:
             }
             //dont store it in temp just use left and right pointers siu
             
-            while((right-left+1)-mx>k){
+            if((right-left+1)-mx>k){
                 
                 cout<<"Called";
                 
