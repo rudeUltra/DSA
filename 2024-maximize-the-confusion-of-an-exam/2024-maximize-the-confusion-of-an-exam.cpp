@@ -19,6 +19,8 @@ public:
             
             while((right-left+1)-mx>k){
                 
+                cout<<"Called";
+                
                 mp[answerKey[left]]--;
                 left++;
             }
