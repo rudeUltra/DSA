@@ -1,34 +1,45 @@
 class Solution {
 public:
     vector<int> largestDivisibleSubset(vector<int>& nums) {
+        //transitive property if a-b b-c then a-c Noice
+        
         int n=nums.size();
         sort(nums.begin(),nums.end());
-        vector<int>dp(n,1); //1 because every element is a subsequence in itself
+        vector<int>dp(n,1);
         vector<int>hash(n);
-        int last=0; //for tracking back and printing the ans
-        int mx=INT_MIN; //for finding the max length
+        
         for(int i=0;i<n;++i){
-            hash[i]=i;
+            hash[i]=-1;
+        }
+        int ans=0;
+        int start=0;
+        
+        for(int i=1;i<n;++i){
             for(int j=0;j<i;++j){
-                if(nums[i]%nums[j]==0 && dp[j]+1>dp[i]){
-                    //checking dp[j]+1>dp[i bcus we wanna know the max we cant update randomly siu]
-                    dp[i]=dp[j]+1;
-                    hash[i]=j; //storing prev index for backtracking and printing the ans siu
+                if(nums[i]%nums[j]==0){
+                    //noice
+                    if(dp[i]<dp[j]+1){
+                        dp[i]=dp[j]+1;
+                        ans=max(ans,dp[i]);
+                        hash[i]=j;
+                    }
                 }
             }
-            if(dp[i]>mx){
-                mx=dp[i];
-                last=i;
+            if(dp[i]==ans){
+                start=i;
             }
         }
-        vector<int>ans;
-        ans.push_back(nums[last]);
-        while(hash[last]!=last){
-            last=hash[last];
-            ans.push_back(nums[last]);
+        vector<int>ans1;
+        ans1.push_back(nums[start]);
+        while(start>=0 && hash[start]!=-1){
+            start=hash[start];
+            ans1.push_back(nums[start]);
+            
         }
-        reverse(ans.begin(),ans.end());
         
-        return ans;
+        return ans1;
+        
+        
+        
     }
 };
