@@ -1,48 +1,54 @@
 class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
-        int n=nums.size();
+        int el1=1e9+1;
+        int el2=1e9+1;
         int count1=0;
         int count2=0;
-        int e1=-1;
-        int e2=-1; //candidates 
+        
+        int n=nums.size();
+        
         for(int i=0;i<n;++i){
-            if(nums[i]==e1){
-                count1++;
-            }
-            else if(nums[i]==e2){
-                count2++;
-            }
-            else if(count1==0){
-                e1=nums[i];
+            if(count1==0 && nums[i]!=el2){
+                //Hm
+                el1=nums[i];
                 count1=1;
             }
-            else if(count2==0){
-                e2=nums[i];
-                count2=1; //new candidate has to taken
+            else if(count2==0 && nums[i]!=el1){
+                el2=nums[i];
+                count2=1;
+            }
+            else if(nums[i]==el1){
+                count1++;
+            }
+            else if(nums[i]==el2){
+                count2++;
             }
             else{
                 count1--;
-                count2--; //cancelling
+                count2--; //hm
             }
         }
-        //checking if the candidates are correct or not
-        count1=0;
-        count2=0;
+        cout<<count1<<" "<<count2;
+        //check now hm
         vector<int>ans;
+        int count=0;
         for(int i=0;i<n;++i){
-            if(nums[i]==e1){
-                count1++;
-            }
-            else if(nums[i]==e2){
-                count2++;
+            if(nums[i]==el1){
+                count++;
             }
         }
-        if(count1>n/3){
-            ans.push_back(e1);
+        if(count>n/3){
+            ans.push_back(el1);
         }
-        if(count2>n/3){
-            ans.push_back(e2);
+        count=0;
+        for(int i=0;i<n;++i){
+            if(nums[i]==el2){
+                count++;
+            }
+        }
+        if(count>n/3){
+            ans.push_back(el2);
         }
         return ans;
     }
