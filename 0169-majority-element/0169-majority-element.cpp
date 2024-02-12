@@ -1,24 +1,25 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        //i guess the cancelling out option
-        int count=1;
-        int ans=nums[0];
+        int count=0;
+        int majority_element=INT_MAX;
+        int n=nums.size();
         
-        for(int i=1;i<nums.size();++i){
-            if(nums[i]!=ans){
-                count--;
+        for(int i=0;i<n;++i){
+            //O(1) space NOice
+            //Guarantee HM. Noice
+            if(count==0){
+                count=1;
+                majority_element=nums[i];
             }
-            else{
+            else if(nums[i]==majority_element){
                 count++;
             }
-            if(count==0){
-                //fok ok ure the new king now gg
-                ans=nums[i];
-                count=1;
+            else{
+                count--;
             }
         }
-        
-        return ans;
+        //Basically cancelling out logiC
+        return majority_element;
     }
 };
