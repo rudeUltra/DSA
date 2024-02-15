@@ -1,51 +1,46 @@
 class Solution {
 public:
-    bool isPal(string &temp){
+    
+    bool isPal(string &curr){
+        int n=curr.size();
         int i=0;
-        int j=temp.size()-1;
+        int j=n-1;
         
+        //2 pointers hm.
         while(i<j){
-            if(temp[i]!=temp[j]){
+            if(curr[i]!=curr[j]){
                 return false;
             }
-            ++i;
-            --j;
+            i++;
+            j--;
         }
         return true;
     }
-    void f(int idx,string &s,vector<string>&temp,vector<vector<string>>&ans){
-        if(idx==s.size()){
+    
+    void f(int idx,string&s,vector<string>&temp,vector<vector<string>>&ans){
+        if(idx>=s.size()){
+            //Noice
             ans.push_back(temp);
             return;
         }
-        string temp1="";
+        string curr="";
         for(int i=idx;i<s.size();++i){
-            temp1+=s[i];
-            if(isPal(temp1)){
-                temp.push_back(temp1);
+            curr+=s[i]; //make the new substring
+            
+            if(isPal(curr)){
+                temp.push_back(curr);
                 f(i+1,s,temp,ans);
-                temp.pop_back();
+                temp.pop_back(); //backtrack Hm.
             }
         }
-        
     }
     
-    //Lets Gooo \U0001f60e
-    
     vector<vector<string>> partition(string s) {
-        //I legit need to host my sites BC..
-        //let's do that only today let's host Kuebiko Siu
-        //Explore CHakraUI
-        
-        vector<string>temp;
         vector<vector<string>>ans;
-        
-        int n=s.size();
+        vector<string>temp;
         
         f(0,s,temp,ans);
         
         return ans;
-        
-        
     }
 };
