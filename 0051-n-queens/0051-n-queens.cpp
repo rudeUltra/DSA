@@ -1,17 +1,6 @@
 class Solution {
 public:
-    vector<vector<string>> solveNQueens(int n) {
-        vector<vector<string>>ans;
-        vector<string>ds(n);
-        //initialize
-        string s(n,'.');
-        for(int i=0;i<n;++i){
-            ds[i]=s;
-        }
-        dfs(0,n,ds,ans);
-        return ans;
-    }
-    bool issafe(int row,int col,vector<string>ds){
+    bool valid(int row,int col,vector<string>ds){
         //check for upper right 
         int i=row;
         int j=col;
@@ -46,18 +35,36 @@ public:
         }
         return true;
     }
-    void dfs(int col,int n,vector<string>&ds,vector<vector<string>>&ans){
-        if(col==n){
-            ans.push_back(ds);
-            return;
-        }
+    void f(int col,int n,vector<vector<string>>&ans,vector<string>&temp){
+       if(col==n){
+           ans.push_back(temp);
+           return;
+       }
         
-        for(int row=0;row<n;++row){
-            if(issafe(row,col,ds)){
-                ds[row][col]='Q';
-                dfs(col+1,n,ds,ans);
-                ds[row][col]='.';
+        for(int i=0;i<n;++i){
+            //rOW placement
+            if(valid(i,col,temp)){
+                temp[i][col]='Q';
+                f(col+1,n,ans,temp);
+                temp[i][col]='.'; //backtrack
             }
         }
+        
+    }
+    
+    
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>>ans;
+        vector<string>temp;
+        string ds(n,'.');
+        for(int i=0;i<n;++i){
+            temp.push_back(ds);
+        }
+        
+        f(0,n,ans,temp);
+        
+        return ans;
+        
+        
     }
 };
