@@ -11,67 +11,66 @@
 class Solution {
 public:
     
-    ListNode*merge(ListNode*head,ListNode*slow){
-        ListNode*temp=new ListNode();
-        ListNode *ptr1=temp;
+    ListNode* merge(ListNode*left,ListNode*right){
+        ListNode*ans=new ListNode(0); //DummY noice
+        ListNode*head=ans;
         
-        while(head!=NULL && slow!=NULL){
-            if(head->val<slow->val){
-                //basic merge algorithm
-                ptr1->next=head;
-                ptr1=ptr1->next;
+        while(left && right){
+            if(left->val<right->val){
+                head->next=left;
+                left=left->next;
                 head=head->next;
             }
             else{
-                ptr1->next=slow;
-                ptr1=ptr1->next;
-                slow=slow->next;
+                head->next=right;
+                right=right->next;
+                head=head->next;
             }
         }
-        
-        //for remaining elements if any
-        while(head){
-            ptr1->next=head;
-            ptr1=ptr1->next;
+        while(left){
+            head->next=left;
+            left=left->next;
             head=head->next;
         }
-        while(slow){
-            ptr1->next=slow;
-                ptr1=ptr1->next;
-                slow=slow->next;
+        while(right){
+            head->next=right;
+            right=right->next;
+            head=head->next;
         }
-        return temp->next;
+        
+        return ans->next;
+        
     }
     
     
+    
+    
     ListNode* sortList(ListNode* head) {
-        
-        if(head==NULL){
-            return NULL;
-        }
-        if(head->next==NULL){
+        //Bruh this question who tf asks this BC xD but ok.
+        if(head==NULL || head->next==NULL){
             return head;
         }
-        //basically merge sort siu
-        ListNode *slow=head;
-        ListNode *fast=head;
+        
+        ListNode*slow=head;
+        ListNode*fast=head;
         ListNode *prev=NULL;
         
         while(fast && fast->next!=NULL){
             prev=slow;
             slow=slow->next;
-            
             fast=fast->next->next;
         }
         
-        //split the linked list
+        //Now divide SIu
         prev->next=NULL;
         
-        head=sortList(head);
-        slow=sortList(slow);
+        //it will return a new list also na SIU
+        ListNode*newLeft=sortList(head);
+        ListNode*newRight=sortList(slow);
         
-        return merge(head,slow);
+        //nOW merge NOice
+        ListNode*ans=merge(newLeft,newRight);
         
-        
+        return ans;
     }
 };
