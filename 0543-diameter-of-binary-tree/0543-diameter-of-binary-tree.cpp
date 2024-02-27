@@ -11,23 +11,23 @@
  */
 class Solution {
 public:
-    //all thesae questions are based on the height of the tree type nice post-order siu
-    int f(TreeNode*root,int &ans){
+    
+    int height(TreeNode*root,int &ans){
         if(root==NULL){
             return 0;
         }
-        int x=f(root->left,ans);
-        int y=f(root->right,ans);
-
-        ans=max(ans,x+y); //arc
-
-        return 1+max(x,y);
+        
+        int left=height(root->left,ans);
+        int right=height(root->right,ans);
+        
+        ans=max(ans,(left+right)); //At each junction noice
+        
+        return 1+max(left,right);
     }
+    
     int diameterOfBinaryTree(TreeNode* root) {
-        //lets gooo new question xD
-        int ans=INT_MIN;
-        //path questions so basically make an Arc type figure siu
-        f(root,ans);
+        int ans=0;
+        height(root,ans);
         return ans;
     }
 };
