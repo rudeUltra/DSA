@@ -3,19 +3,16 @@
  * @return {Function}
  */
 function memoize(fn) {
-    const cache={}; //objeCT NOice
+    const cache={};
     
     return function(...args) {
+       
         let key=JSON.stringify(args);
-        
         if(key in cache){
-            return cache[key]; //MeMoization boi
+            return cache[key];
         }
-        //Json is the string version of an Object NOice hm.
-        //.json converts JSON into an object hM.
-        
-        let temp=fn(...args);
-        cache[key]=temp;
+        let ans=fn(...args);
+        cache[key]=ans;
         
         return cache[key];
     }
