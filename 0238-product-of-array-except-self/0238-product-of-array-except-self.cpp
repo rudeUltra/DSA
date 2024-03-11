@@ -1,17 +1,28 @@
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
+        //Kind of prefix sum xD ok 
         int n=nums.size();
-        vector<int>ans(n,1);
-        int res=1;
+        vector<int>ans(n,0);
+        int sum=1;
+        
         for(int i=0;i<n;++i){
-            ans[i]=res;
-            res=res*nums[i]; //calculating prefix
+            ans[i]=sum*nums[i];
+            sum=sum*nums[i];
         }
-        res=1;
+        for(auto it:ans){
+            cout<<it<<" ";
+        }
+        sum=1;
         for(int i=n-1;i>=0;--i){
-            ans[i]=ans[i]*res;
-            res=res*nums[i];
+            if(i==0){
+                ans[i]=sum;
+            }
+            else{
+                int prev=ans[i-1];
+                ans[i]=prev*sum;
+                sum=sum*nums[i];
+            }
         }
         return ans;
     }
