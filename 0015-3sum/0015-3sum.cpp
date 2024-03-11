@@ -1,52 +1,45 @@
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        //not a hashmap problem siu
+        //Duplicates BoiIiIiII
+        //and the OSCAR goes to Cilian Murphy..
         int n=nums.size();
-        
+        sort(nums.begin(),nums.end());
         vector<vector<int>>ans;
         
-        sort(nums.begin(),nums.end());
         
-        for(int i=0;i<nums.size()-2;++i){
-            //I is fixed now find the rest with two pointer approach siu
-            if(i>0 && nums[i]==nums[i-1]){
-                continue; //Duplicate
+        for(int i=0;i<n-2;++i){
+            if(i>0 && nums[i-1]==nums[i]){
+                //same NO !
+                continue;
             }
-            
-            int left=i+1;
-            int right=n-1;
-            
+            int low=i+1;
+            int high=n-1;
             int target=-nums[i];
-            
-            while(left<right){
-                int sum=nums[left]+nums[right];
-                
-                if(sum<target){
-                    left++;
+            while(low<high){
+                if(nums[low]+nums[high]==target){
+                    //noICE
+                    ans.push_back({nums[i],nums[low],nums[high]});
+                    
+                    //handle duplicates hm.
+                    while(low<high && nums[low]==nums[low+1]){
+                        low++;
+                    }
+                    while(low<high && nums[high]==nums[high-1]){
+                        high--;
+                    }
+                    low++;
+                    high--;
                 }
-                else if(sum>target){
-                    right--;
+                else if(nums[low]+nums[high]>target){
+                    high--;
                 }
                 else{
-                    //gotemm
-                    ans.push_back({nums[i],nums[left],nums[right]});
-                    
-                    //now take care of duplicates 
-                    
-                    while(left<n-1 && nums[left]==nums[left+1]){
-                        left++;
-                    }
-                    while(right>0 && nums[right]==nums[right-1]){
-                        right--;
-                    }
-                    right--;
-                    left++;
+                    low++;
                 }
             }
-            
-           
         }
-         return ans;
+        
+        return ans;
     }
 };
