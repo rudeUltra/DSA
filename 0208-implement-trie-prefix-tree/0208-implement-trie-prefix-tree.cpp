@@ -1,101 +1,81 @@
 class Node{
     public:
-    bool end;
-    Node* links[26]; //26 characters siu
-    
+    Node*links[26];
+    bool flag=false;
     
     Node(){
         for(int i=0;i<26;++i){
             links[i]=NULL;
         }
-        end=false;
     }
     
-    bool linkExists(char a){
-        if(links[a-'a']==NULL){
-            return false;
+    bool linkExists(char word){
+        if(links[word-'a']!=NULL){
+            return true;
         }
-        return true;
+        return false;
     }
     
-    Node* link(char a){
-        return links[a-'a'];
-    }
-    
-    void addLink(char a){
+    void createLink(char word){
         Node*temp=new Node();
-        links[a-'a']=temp;
+        links[word-'a']=temp;
+        return;
     }
-      
+    
+    Node * next(char word){
+        return links[word-'a'];
+    }
+    
 };
-
-
 class Trie {
 public:
-    
     Node*root;
     Trie() {
-        root=new Node(); //aha root node gotemm
+        root=new Node(); 
+        //Initialization Boi.
     }
     
     void insert(string word) {
         int n=word.size();
-        
-        Node*root1=root; //point to the root hm
-        
+        Node*curr=root; //like linked List nOice
         for(int i=0;i<n;++i){
-            if(root1->linkExists(word[i])==false){
-                //sed no link
-                root1->addLink(word[i]);
+            if(!curr->linkExists(word[i])){
+                curr->createLink(word[i]);
             }
-            //next
-            root1=root1->link(word[i]);
+            curr=curr->next(word[i]);
         }
-        
-        //aha
-        
-        root1->end=true; //word ends here
-        
+        curr->flag=true; //word Exists NOice
+        //Striver used function because he kept the data as private NOice
     }
     
     bool search(string word) {
         
         int n=word.size();
-        Node*root1=root; //point to the root hm
-        
+        Node*curr=root; //like linked List nOice
         for(int i=0;i<n;++i){
-            if(root1->linkExists(word[i])==false){
-                //sed no link
+            if(!curr->linkExists(word[i])){
                 return false;
             }
-            //next
-            root1=root1->link(word[i]);
+            curr=curr->next(word[i]);
         }
-        
-        //aha
-        
-        return root1->end;
+        if(curr->flag==true){
+            return true;
+        }
+        return false;
         
     }
     
     bool startsWith(string prefix) {
-        
         int n=prefix.size();
-        Node*root1=root; //point to the root hm
-        
+        Node*curr=root; //like linked List nOice
         for(int i=0;i<n;++i){
-            if(root1->linkExists(prefix[i])==false){
-                //sed no link
+            if(!curr->linkExists(prefix[i])){
                 return false;
             }
-            //next
-            root1=root1->link(prefix[i]);
+            curr=curr->next(prefix[i]);
         }
         
-        //aha
-        
-        return true; //kUch to hoga Xd
-        
+        return true;
     }
 };
 
