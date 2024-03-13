@@ -21,36 +21,39 @@ public:
 
 class Solution {
 public:
+    
+    
+    
     Node* cloneGraph(Node* node) {
-        //BFs solution makes more sense here siu
-        
-        unordered_map<Node*,Node*>visited;
-        
-        if(node==NULL){
-            return NULL; //siu
-        }
-        
-        visited[node]=new Node(node->val);
-        
+        //dO Normal BFS I guess HM. Noice
+        unordered_map<Node*,Node*>mp;
         queue<Node*>pq;
+        if(node==NULL){
+            return node;
+        }
         pq.push(node);
-        
+        unordered_map<Node*,int>visited;
+        visited[node]=1;
+        mp[node]=new Node(node->val);
         while(!pq.empty()){
-            Node* curr=pq.front();
+            auto it=pq.front();
             pq.pop();
             
-            for(auto it:curr->neighbors){
-                if(visited[it]==NULL){
-                    //never been visited so create a new node
-                    visited[it]=new Node(it->val);
-                    pq.push(it); //normal BFS
+            for(auto neighbor:it->neighbors){
+                if(mp.find(neighbor)==mp.end()){
+                    //Create One noICE
+                    mp[neighbor]=new Node(neighbor->val);
                 }
-                //Compulsory step push each edge
-                visited[curr]->neighbors.push_back(visited[it]);
-                
+                mp[it]->neighbors.push_back(mp[neighbor]);
+                if(visited[neighbor]!=1){
+                    //Noice
+                    visited[neighbor]=1;
+                    pq.push(neighbor);
+                }
             }
+            
         }
         
-        return visited[node];
+        return mp[node];
     }
 };
