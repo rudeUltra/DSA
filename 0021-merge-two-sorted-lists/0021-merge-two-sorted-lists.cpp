@@ -11,36 +11,35 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode *list3=new ListNode();
+        //RDJ nOiCE
+        ListNode*ans=new ListNode();
+        ListNode*curr=ans;
         
-        ListNode *ptr=list3;
-        
-        while(list1 && list2){
+        while(list1!=NULL && list2!=NULL){
             if(list1->val<list2->val){
-                ptr->next=list1;
-                ptr=ptr->next;
+                curr->next=list1;
+                curr=curr->next;
                 list1=list1->next;
-                
             }
             else{
-                ptr->next=list2;
-                ptr=ptr->next;
+                curr->next=list2;
+                curr=curr->next;
                 list2=list2->next;
             }
         }
         
-        while(list1){
-             ptr->next=list1;
-                ptr=ptr->next;
+        //In case someelements are left in one of the Lists Merge Method Hm.
+        while(list1!=NULL){
+            curr->next=list1;
+                curr=curr->next;
                 list1=list1->next;
-            
         }
-        while(list2){
-             ptr->next=list2;
-                ptr=ptr->next;
+        while(list2!=NULL){
+             curr->next=list2;
+                curr=curr->next;
                 list2=list2->next;
         }
         
-        return list3->next;
+        return ans->next;
     }
 };
