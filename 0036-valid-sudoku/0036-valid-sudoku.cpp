@@ -1,21 +1,38 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        int used1[9][9] = {0}, used2[9][9] = {0}, used3[9][9] = {0};
+        int n=board.size();
+        int m=board[0].size();
         
-        for(int i = 0; i < board.size(); ++ i)
-            for(int j = 0; j < board[i].size(); ++ j)
-                if(board[i][j] != '.')
-                {
-                    int num = board[i][j] - '0' - 1, k = i / 3 * 3 + j / 3;
-                    if(used1[i][num] || used2[j][num] || used3[k][num])
+        int rows[9][9]={-1};
+        int cols[9][9]={-1};
+        int boxes[9][9]={-1};
+        
+        
+        
+        for(int i=0;i<n;++i){
+            for(int j=0;j<m;++j){
+                if(board[i][j]!='.'){
+                    int num=board[i][j]-'0';
+                    num--; //to fit in the array hm.
+                    if(rows[i][num]==1){
                         return false;
-                    used1[i][num] = used2[j][num] = used3[k][num] = 1;
+                    }
+                    rows[i][num]=1;
+                    if(cols[j][num]==1){
+                        return false;
+                    }
+                    cols[j][num]=1;
+                    
+                    if(boxes[i/3*3+j/3][num]==1){
+                        return false;
+                    }
+                    boxes[i/3*3+j/3][num]=1;
+                    
                 }
-        
+                //check all boxes hm
+            }
+        }
         return true;
-        //fucking genius Man woaH!
-        
-        
     }
 };
