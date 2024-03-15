@@ -11,35 +11,36 @@
 class Solution {
 public:
     void reorderList(ListNode* head) {
-        ListNode *fast=head;
-        ListNode *slow=head;
+        stack<ListNode*>st;
+        ListNode*slow=head;
+        ListNode*fast=head;
         
         while(fast && fast->next!=NULL){
             slow=slow->next;
             fast=fast->next->next;
         }
-        ListNode *mid;
-        stack<ListNode*>st;
-        if(fast!=NULL){
-            mid=slow->next;
-        }
-        else{
-            mid=slow;
-        }
-        while(mid){
-            st.push(mid);
-            mid=mid->next;
-        }
-        ListNode*ans=head;
+        //sPLiit
+        ListNode*curr=slow->next;
+        slow->next=NULL; //gOTEmmm.
         
-        while(st.size()){
-            ListNode *temp=ans->next;
-            ans->next=st.top();
-            st.top()->next=temp;
-            st.pop();
-            ans=temp;
+        while(curr!=NULL){
+            st.push(curr);
+            curr=curr->next;
         }
-        slow->next=NULL;
-    
+        
+        //now time for the Memes
+        curr=head;
+        
+        while(curr!=NULL && st.size()!=0){
+            ListNode*temp=curr->next;
+            ListNode*reversed=st.top();
+            st.pop();
+            reversed->next=temp;
+            curr->next=reversed;
+            curr=temp;
+        }
+        
+        
+        
     }
 };
