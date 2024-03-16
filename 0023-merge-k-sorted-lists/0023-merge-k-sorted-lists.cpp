@@ -11,43 +11,31 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        //siuuu
-        //priority_queue with linked list less go
-        
+        //cant have k pointers can I xD
+        priority_queue<pair<int,ListNode*>,vector<pair<int,ListNode*>>,greater<pair<int,ListNode*>>>pq; //min-heap
         int n=lists.size();
-        priority_queue<pair<int,ListNode*>,vector<pair<int,ListNode*>>,greater<pair<int,ListNode*>>>pq;
         
+        //keep adding these motherfuckers xD
         for(int i=0;i<n;++i){
-            ListNode*temp;
-            temp=lists[i];
-            
-            while(temp){
+            ListNode*temp=lists[i];
+            while(temp!=NULL){
                 pq.push({temp->val,temp});
                 temp=temp->next;
             }
         }
         
-        //all linked lists are in the pq 
-        ListNode* ptr=NULL;
-        ListNode*head=NULL;
-        
-        if(pq.size()==0){
-            return NULL;
-        }
-        ptr=pq.top().second; //we have to assign first siu
-        head=pq.top().second;
-        pq.pop();
+        //make the list siu
+        ListNode *l1=new ListNode();
+        ListNode*curr=l1;
         
         while(!pq.empty()){
             auto it=pq.top();
-            ptr->next=it.second;
             pq.pop();
-            ptr=ptr->next;
+            curr->next=it.second;
+            curr=curr->next;
         }
-        ptr->next=NULL; //to finish the list
         
-        return head;
-        
-        
+        curr->next=NULL;
+        return l1->next;
     }
 };
