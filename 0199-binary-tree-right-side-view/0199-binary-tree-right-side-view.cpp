@@ -12,39 +12,33 @@
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        //basically the last element in the level order
-        //for left right use level order for top and bottom use vertical order siu
-        
+        //It;s ok to be bored but just keep sitting that's the goal.
         vector<int>ans;
         queue<TreeNode*>pq;
-        
-        if(root==NULL){
-            return ans; //NOLL
-        }
-        
         pq.push(root);
-        
+        if(root==NULL){
+            return ans;
+        }
+        //level Order NOice
         while(!pq.empty()){
             int n=pq.size();
-            int i=0;
-            while(i<n){
+            for(int i=0;i<n;++i){
                 auto it=pq.front();
                 pq.pop();
-                
                 if(i==n-1){
-                    ans.push_back(it->val); //last value of level siu
+                    //last element of the level then push hm.
+                    ans.push_back(it->val);
                 }
                 
-                if(it->left){
+                if(it->left!=NULL){
                     pq.push(it->left);
                 }
-                if(it->right){
+                if(it->right!=NULL){
                     pq.push(it->right);
                 }
-                ++i;
             }
         }
-        return ans;
         
+        return ans;
     }
 };
