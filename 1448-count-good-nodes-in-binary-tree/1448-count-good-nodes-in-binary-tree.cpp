@@ -11,28 +11,26 @@
  */
 class Solution {
 public:
-    void dfs(TreeNode*root,int &ans,int prev){
+    
+    void f(TreeNode*root,int &count,int mx){
         if(root==NULL){
             return;
         }
-        if(root->val>=prev){
-            cout<<root->val<<" ";
-            ans++;
+        
+        mx=max(mx,root->val);
+        if(root->val==mx){
+            //Noice
+            count++;
         }
-        prev=max(prev,root->val);
         
-        
-        dfs(root->left,ans,prev);
-        dfs(root->right,ans,prev);
+        f(root->left,count,mx);
+        f(root->right,count,mx);
     }
     
     
     int goodNodes(TreeNode* root) {
-        //basically preorder with extra parameters sed
-        int ans=0;
-        int prev=INT_MIN;
-        
-        dfs(root,ans,prev);
-        return ans;
+        int count=0;
+        f(root,count,INT_MIN);
+        return count;
     }
 };
