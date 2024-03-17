@@ -12,19 +12,28 @@
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        int rootIdx = 0;
-        return build(preorder, inorder, rootIdx, 0, inorder.size()-1);
+        int n=preorder.size();
+        int k=0;
+        return f(preorder,inorder,k,0,n-1);
     }
     
-    TreeNode* build(vector<int>& preorder, vector<int>& inorder, int& rootIdx, int left, int right) {
-        if (left > right) return NULL;
-        int pivot = left;  // find the root from inorder
-        while(inorder[pivot] != preorder[rootIdx]) pivot++;
+    TreeNode* f(vector<int>&preorder,vector<int>&inorder,int &k,int left,int right){
+        //siu
+        if(left>right){
+            return NULL; //No
+        }
+        int cut=left;
+        while(inorder[cut]!=preorder[k]){
+            cut++;
+        }
         
-        rootIdx++;
-        TreeNode* newNode = new TreeNode(inorder[pivot]);
-        newNode->left = build(preorder, inorder, rootIdx, left, pivot-1);
-        newNode->right = build(preorder, inorder, rootIdx, pivot+1, right);
-        return newNode;
+        TreeNode*middle=new TreeNode(preorder[k]);
+        k++;
+        
+        middle->left=f(preorder,inorder,k,left,cut-1);
+        middle->right=f(preorder,inorder,k,cut+1,right);
+        
+        return middle;
+        
     }
 };
