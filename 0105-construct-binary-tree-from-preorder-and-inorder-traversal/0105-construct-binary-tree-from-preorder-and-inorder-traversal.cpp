@@ -22,7 +22,7 @@ public:
         if(left>right){
             return NULL; //No
         }
-        int cut=left;
+        int cut=0;
         while(inorder[cut]!=preorder[k]){
             cut++;
         }
