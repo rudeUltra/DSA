@@ -29,6 +29,7 @@ public:
                 else{
                     mp[5]=mp[5]-3;
                 }
+                //20 dollars is useless lmao
                 
             }
         }
